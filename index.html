@@ -75,6 +75,22 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 .banner{border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:0 0 18px;background:var(--surface)}
 .banner .bt{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .banner .bq{font-size:calc(18px * var(--fs));font-weight:800;margin-top:4px}
+.handoff{margin-top:18px;border:1px solid var(--border);border-radius:14px;padding:12px 16px;background:var(--surface)}
+.handoff .hl{font:600 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.handoff .hw{font:700 14px var(--font);margin-bottom:4px}
+.handoff .hw.son{color:var(--gold)} .handoff .hw.thoa{color:var(--thoa)}
+.handoff .hx{font-size:calc(16px * var(--fs));color:var(--dim);line-height:1.5}
+.roles{width:100%;border-collapse:collapse;font-size:calc(15px * var(--fs));margin-top:22px}
+.roles th{font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:8px;border-bottom:1px solid var(--border)}
+.roles th.son{color:var(--gold)} .roles th.thoa{color:var(--thoa)} .roles th:first-child{color:var(--faint)}
+.roles td{padding:8px;border-top:1px solid var(--border);vertical-align:top;color:var(--dim)}
+.roles td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+.roles-wrap{overflow-x:auto}
+#upd{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(5,8,18,.6);padding:16px}
+#upd p{margin:0;color:var(--dim);font-size:14px;text-align:center}
+#updBtn{display:flex;align-items:center;gap:10px;border:0;border-radius:999px;background:var(--gold);color:#1B1206;font:800 18px var(--font);padding:16px 26px;cursor:pointer;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#updBtn svg{width:20px;height:20px}
+.ver{font:500 12px var(--mono);color:var(--faint);margin-top:10px}
 .kicker{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
 .stitle{font-size:calc(30px * var(--fs));line-height:1.2;font-weight:800;margin:0 0 22px;text-wrap:balance}
 .blocks{display:flex;flex-direction:column;gap:18px}
@@ -238,6 +254,11 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
   </footer>
 </div>
 
+<div id="upd" hidden role="alertdialog" aria-modal="true" aria-label="Có phiên bản mới">
+  <button id="updBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg>Có bản mới · Bấm để cập nhật</button>
+  <p>Slide đang mở, ghi nhanh và đồng hồ được giữ nguyên.</p>
+</div>
+
 <div class="sheet" id="tocSheet" hidden>
   <div class="sheet-box">
     <div class="sheet-head"><h2>Mục lục · 50 phút</h2><button class="tbtn" data-close>Đóng</button></div>
@@ -250,9 +271,11 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
           <li>"Nghị quyết 86/2026" → "Nghị quyết 86/NQ-CP".</li>
           <li>Vòng 4: "Cục ĐMST/NATEC" → "Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
           <li>Vòng 3: thêm dấu ↔ vào "University ↔ Policy maker".</li>
+          <li><b>Thêm</b> bảng phân vai MC 1/MC 2 ở slide đầu, khung "Dẫn tiếp" cuối mỗi slide.</li>
           <li><b>Thêm</b> lượt mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI (16:16, 2 phút). Vòng 4 còn 5 phút, kết luận còn 2 phút.</li>
         </ul>
       </div>
+      <div class="ver" id="ver"></div>
     </div>
   </div>
 </div>
@@ -310,11 +333,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
-    follow:[
-      "Nghị quyết 86/NQ-CP đặt chỉ tiêu 100% cơ sở giáo dục đại học có nội dung ĐMST và khởi nghiệp trong chương trình đào tạo vào năm 2030. Cục sẽ đo chỉ tiêu này thế nào để nó không dừng ở phong trào?",
-      "Luật KH,CN&ĐMST 2025 cho tổ chức chủ trì tự động có quyền sở hữu kết quả nghiên cứu (khoản 2 Điều 25). Theo ông, trường đại học đã dùng quyền này đến đâu?",
-      "Vai trò đại học ông kỳ vọng là nơi \"tạo ra công nghệ\", hay còn là nơi \"tạo ra doanh nghiệp\"?"
-    ],
+    follow:["Thưa ông, Nghị quyết 86/NQ-CP của Chính phủ đặt mục tiêu đến năm 2030, 100% cơ sở giáo dục đại học có nội dung đổi mới sáng tạo và khởi nghiệp trong chương trình đào tạo. Xin ông chia sẻ thêm, Cục sẽ đo lường và theo dõi chỉ tiêu này như thế nào để bảo đảm đây là năng lực thực chất, chứ không dừng lại ở các hoạt động mang tính phong trào?", "Thưa ông, Luật Khoa học, công nghệ và đổi mới sáng tạo năm 2025 đã cho phép tổ chức chủ trì được tự động giao quyền sở hữu kết quả nghiên cứu. Theo quan sát của ông, các trường đại học đã thực sự vận dụng quyền tự chủ này đến đâu, và đâu là điều khiến các trường còn e ngại?", "Xin được hỏi thêm ông một ý ngắn: trong kỳ vọng của cơ quan quản lý, trường đại học sẽ chủ yếu là nơi tạo ra công nghệ, hay còn phải trở thành nơi trực tiếp tạo ra doanh nghiệp công nghệ?"],
     tips:["Nếu ông Hiệu nói dài về chính sách chung, kéo về câu hỏi: \"vai trò của trường thay đổi ở điểm nào cụ thể nhất?\""],
     facts:["<b>NQ 57-NQ/TW</b> (Bộ Chính trị, 22/12/2024): đột phá KH,CN, ĐMST và chuyển đổi số.","<b>Luật KH,CN&ĐMST</b> thông qua 27/6/2025."],
     jot:true
@@ -326,11 +345,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
-    follow:[
-      "Công viên ra mắt từ 1/3/2025. Sau hơn một năm rưỡi, đâu là dự án đầu tiên đi từ phòng thí nghiệm ra doanh nghiệp nhờ Công viên?",
-      "Một doanh nghiệp vào Công viên nhận được gì mà ở bên ngoài không có?",
-      "Cuộc thi \"RND to Startup\" 2026 của ĐHQGHN gắn với Công viên ra sao?"
-    ],
+    follow:["Thưa ông, Công viên chính thức ra mắt từ tháng 3 năm 2025. Sau hơn một năm rưỡi vận hành, ông có thể chia sẻ với hội trường một dự án cụ thể đã đi từ phòng thí nghiệm ra thị trường nhờ có Công viên được không ạ?", "Thưa ông, nhìn từ phía doanh nghiệp, khi tham gia vào Công viên, doanh nghiệp nhận được những giá trị gì mà họ khó có thể tìm thấy ở bên ngoài?", "Thưa ông, cuộc thi \"RND to Startup\" năm 2026 của Đại học Quốc gia Hà Nội có mối liên hệ như thế nào với Công viên: đây là nguồn đầu vào cho hoạt động ươm tạo, hay là một hoạt động độc lập?"],
     tips:["Lượt này chị Thoa hỏi. Câu tiếp theo là của anh, mở bằng \"Một mô hình rất đáng chờ đợi!\""],
     facts:["<b>Công viên Công nghệ cao và ĐMST, ĐHQGHN</b>: QĐ 189/QĐ-ĐHQGHN ngày 13/1/2025, ra mắt 1/3/2025. Ông Kiểm là giám đốc đầu tiên."],
     jot:true
@@ -342,11 +357,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
-    follow:[
-      "Đề án chọn license thay vì định giá tài sản trí tuệ ngay từ đầu. Nếu phải giải thích cho một nhà khoa học trong 30 giây, ông sẽ nói thế nào?",
-      "Standard Deal rút thời gian xử lý nội bộ từ tối đa 57 ngày làm việc xuống 15 ngày. Bước nào trước đây gây tắc nhiều nhất?",
-      "Giảng viên làm nhà sáng lập spin-off có được giữ vị trí giảng dạy không? Đề án có đề xuất chế độ kiêm nhiệm và tạm hoãn nghĩa vụ (career-break)."
-    ],
+    follow:["Thưa ông, đề án của Bách khoa lựa chọn phương thức cấp phép thay vì định giá tài sản trí tuệ ngay từ đầu. Nếu phải giải thích điều này cho một nhà khoa học trong khoảng ba mươi giây, ông sẽ diễn đạt như thế nào?", "Thưa ông, theo đề án, khi áp dụng gói điều kiện chuẩn, thời gian xử lý nội bộ có thể rút từ tối đa 57 ngày làm việc xuống còn khoảng 15 ngày. Xin ông cho biết, trước đây khâu nào trong quy trình thường gây ách tắc nhiều nhất?", "Thưa ông, nhiều giảng viên còn băn khoăn liệu khi trở thành nhà sáng lập doanh nghiệp spin-off, họ có thể tiếp tục giữ vị trí giảng dạy và nghiên cứu tại trường hay không. Mô hình của Bách khoa giải quyết băn khoăn này ra sao?"],
     tips:["Nếu ông Hiệp đi sâu vào thuật ngữ (SAFE, option pool), xin ông một ví dụ cụ thể cho hội trường."],
     facts:[
       "<b>Mẫu Carnegie Mellon</b>: trường nhận 6% cổ phần (license độc quyền, đã có bằng), 5% (không độc quyền), 3% (chưa có bằng, kể cả phần mềm).",
@@ -364,7 +375,7 @@ const S = [
     {who:"guest", html:"(Mỗi đại diện trường phản hồi nhanh ~2 phút)"}
   ],
   notes:{
-    follow:["Trong ba con số đó, con số nào khó đạt nhất, và vì sao?","Đến VNEI Summit 2027, ông muốn con số nào tăng gấp đôi?","Con số đó có được công bố công khai hằng năm không?"],
+    follow:["Xin được hỏi thêm các ông: trong ba con số vừa nêu, đâu là con số khó đạt được nhất, và vì sao?", "Thưa các ông, nếu hẹn gặp lại tại VNEI Summit 2027, các ông mong muốn con số nào sẽ tăng gấp đôi?", "Thưa các ông, những con số này hiện đã được nhà trường công bố công khai, định kỳ hằng năm hay chưa?"],
     tips:["Nếu khách đưa số <b>đầu vào</b> (số hội thảo, số đội dự thi), kéo lại: \"Đó là đầu vào. Còn đầu ra mà doanh nghiệp trả tiền thì sao?\"","Ghi nhanh 6 con số vào ô bên dưới, phần kết luận có thể nhắc lại."],
     jot:true
   }},
@@ -375,7 +386,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~2.5 phút)"}
   ],
   notes:{
-    follow:["Cục có tính đưa các KPI này vào thống kê quốc gia về khởi nghiệp, để các trường báo cáo cùng một chuẩn không?","Chương trình quốc gia về khởi nghiệp sáng tạo 2026-2035 (QĐ 3789/QĐ-BKHCN) có cửa nào dành riêng cho spin-off đại học không?"],
+    follow:["Thưa ông, Cục có dự kiến xây dựng một chuẩn chung để các trường đại học báo cáo những chỉ số thực chứng này, và đưa vào hệ thống thống kê quốc gia về khởi nghiệp sáng tạo hay không?", "Thưa ông, trong Chương trình quốc gia về khởi nghiệp sáng tạo giai đoạn 2026-2035, có cơ chế hay nguồn lực nào được thiết kế riêng cho các doanh nghiệp spin-off xuất phát từ trường đại học không ạ?"],
     tips:["Lượt này chị Thoa hỏi. Câu tiếp theo là của anh, hỏi ông Trần Trí Dũng."],
     facts:["<b>NQ 86/NQ-CP</b> ban hành 5/4/2026: Chiến lược quốc gia về khởi nghiệp sáng tạo.","Mục tiêu 2030: 5 triệu doanh nghiệp, ≥10.000 DN khởi nghiệp sáng tạo, ≥5 kỳ lân, vốn mạo hiểm 1,5 tỷ USD, 100% cơ sở GDĐH và GDNN có nội dung ĐMST và khởi nghiệp."],
     jot:true
@@ -387,7 +398,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~2.5 phút)"}
   ],
   notes:{
-    follow:["Từ góc nhìn SwissEP, đại học Việt Nam đang thiếu mắt xích nào nhất: văn phòng chuyển giao (TTO), tiền cho giai đoạn TRL 4-6, hay cố vấn có kinh nghiệm thị trường?","Có điều gì của giai đoạn Đề án 844 nên giữ lại?"],
+    follow:["Thưa ông, từ góc nhìn của SwissEP, theo ông, các trường đại học Việt Nam hiện đang thiếu mắt xích nào nhất: văn phòng chuyển giao công nghệ chuyên nghiệp, nguồn vốn cho giai đoạn hoàn thiện công nghệ, hay đội ngũ cố vấn có kinh nghiệm thị trường?", "Thưa ông, nhìn lại giai đoạn Đề án 844, theo ông có những giá trị nào chúng ta nên tiếp tục gìn giữ khi bước sang giai đoạn mới?"],
     tips:["Câu dẫn gọi \"ông\", câu hỏi gọi \"anh Dũng\". Chọn một cách và giữ nhất quán."],
     facts:["<b>Đề án 844</b>: QĐ 844/QĐ-TTg ngày 18/5/2016, hỗ trợ hệ sinh thái khởi nghiệp ĐMST quốc gia đến 2025.","Ông Trần Trí Dũng: quản lý chương trình SwissEP khu vực Hà Nội, hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong từ 2014."],
     jot:true
@@ -401,7 +412,7 @@ const S = [
     {who:"guest", html:"(Hai trường chia sẻ trực diện ~2 phút/người)"}
   ],
   notes:{
-    follow:["Cơ chế đó nằm ở văn bản cấp nào: Luật, Nghị định, hay quy chế của chính trường?","Nếu định giá IP thấp hơn giá trị thực, ai chịu trách nhiệm? Có cần \"vùng an toàn\" (safe harbour) cho người ký không?"],
+    follow:["Thưa các ông, cơ chế mà các ông vừa đề xuất thay đổi hiện nằm ở cấp văn bản nào: luật, nghị định, hay chính quy chế nội bộ của nhà trường?", "Thưa các ông, trong trường hợp tài sản trí tuệ được định giá thấp hơn giá trị thực, trách nhiệm sẽ thuộc về ai? Và theo các ông, có cần một cơ chế bảo vệ, một \"vùng an toàn\" cho người ra quyết định hay không?"],
     tips:["Ghi lại hai nút thắt khách nêu. Câu tiếp theo anh đưa thẳng hai nút thắt này cho ông Hiệu."],
     facts:["Safe Harbour trong đề án BK có 7 điều kiện: đúng quy trình, hội đồng độc lập, công khai, không tư lợi, theo Standard Deal, kê khai xung đột lợi ích, có ý kiến pháp lý."],
     jot:true
@@ -413,7 +424,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
-    follow:["Bộ có thể ban hành một bộ quy chế mẫu về spin-off và IP để các trường áp dụng ngay không?","Với những điểm thật sự cần sửa ở cấp trên, Cục đang ưu tiên điểm nào trước?"],
+    follow:["Thưa ông, Bộ có thể cân nhắc ban hành một bộ quy chế mẫu về doanh nghiệp spin-off và tài sản trí tuệ để các trường tham khảo, áp dụng ngay, thay vì mỗi trường tự xây dựng riêng hay không?", "Thưa ông, đối với những điểm nghẽn thực sự cần tháo gỡ ở cấp luật và nghị định, Cục đang ưu tiên xử lý vấn đề nào trước?"],
     tips:["Nhắc lại ngắn hai nút thắt hai trường vừa nêu (xem ghi nhanh của slide trước) trước khi hỏi."],
     facts:["Luật KH,CN&ĐMST 2025, khoản 2 Điều 27: tổ chức tự quyết hình thức, giá và phân chia lợi nhuận khi thương mại hóa kết quả nghiên cứu."],
     jot:true
@@ -424,7 +435,7 @@ const S = [
     {who:"guest", html:"(Khách mời trả lời ~2 phút)"}
   ],
   notes:{
-    follow:["Nếu một trường chỉ làm được một việc trong 90 ngày tới, anh khuyên làm việc gì?"],
+    follow:["Thưa ông, nếu một trường đại học chỉ có thể làm được một việc trong 90 ngày tới để cải thiện năng lực quản trị đổi mới sáng tạo, ông sẽ khuyên họ bắt đầu từ việc gì?"],
     tips:["Nếu đang chậm hơn 2 phút, đây là câu nên rút ngắn nhất.","Câu mở Vòng 4 là của anh."],
     jot:true
   }},
@@ -454,10 +465,7 @@ const S = [
     {who:"guest", html:"(TS. Nguyễn Trung Dũng chia sẻ ~2 phút)"}
   ],
   notes:{
-    follow:[
-      "VNEI có thể xây một bộ chỉ số chung để các trường thành viên cùng báo cáo, và công bố tại Summit 2027 không?",
-      "Các trường thành viên chưa có quỹ hay công ty như BK Holdings thì VNEI giúp họ bắt đầu từ đâu?"
-    ],
+    follow:["Thưa ông, VNEI có thể cùng các trường thành viên xây dựng một bộ chỉ số chung về đổi mới sáng tạo đại học, và công bố kết quả tại VNEI Summit 2027 được không ạ?", "Thưa ông, với những trường thành viên chưa có quỹ hay công ty quản lý đầu tư như BK Holdings, mạng lưới VNEI có thể đồng hành để giúp họ bắt đầu từ đâu?"],
     tips:[
       "Ông Nguyễn Trung Dũng đồng thời là <b>Tổng Giám đốc BK Holdings</b>, tức cấp trên của ông Hiệp. Hỏi từ góc độ mạng lưới VNEI, tránh lặp câu chuyện spin-off của HUST.",
       "Luôn gọi đủ họ tên \"Nguyễn Trung Dũng\" để không lẫn với ông Trần Trí Dũng (SwissEP).",
@@ -595,6 +603,16 @@ function hm(min){ const d = new Date(); d.setHours(START_H, START_M + min, 0, 0)
 function pad(n){ return String(n).padStart(2,"0"); }
 function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
+const ROLES = [
+  ["Mở tọa đàm","Chào hội trường, nêu chủ đề và 3 câu hỏi cốt lõi","Giới thiệu 4 khách mời, mời vào Vòng 1"],
+  ["Vòng 1","Hỏi ông Hiệu (mở đầu) · \"Một mô hình rất đáng chờ đợi!\" rồi hỏi ông Hiệp","Cảm ơn ông Hiệu, hỏi ông Kiểm"],
+  ["Vòng 2","\"Chính xác!\" rồi hỏi ba con số (ông Kiểm, ông Hiệp) · hỏi ông Trần Trí Dũng","Dẫn \"Kết quả đâu?\" · hỏi ông Hiệu về NQ 86"],
+  ["Vòng 3","Mở \"Điểm nghẽn thực thi\" · hỏi ông Hiệu (University ↔ Policy maker)","Hỏi hai trường MỘT cơ chế · hỏi ông Trần Trí Dũng"],
+  ["Vòng 4","Nêu luật 60 giây · mời ông Kiểm, ông Hiệu","Câu hỏi chung · mời ông Hiệp, ông Trần Trí Dũng"],
+  ["Chốt nhanh","Câu hỏi 30 giây cho cả panel","-"],
+  ["Góc nhìn VNEI (thêm)","Mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI","-"],
+  ["Kết luận","Thông điệp 3, cảm ơn, hẹn Summit 2027","Mở lời, thông điệp 1 và 2"]
+];
 function coverHTML(){
   const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","5'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới? (+ chốt nhanh 30s)"],["16:16","2'","Góc nhìn VNEI","TS. Nguyễn Trung Dũng, Chủ tịch VNEI (phần thêm)"],["16:18","2'","Kết luận","Thông điệp đúc kết"]];
   return `<div class="cover"><p class="kicker">VNEI Summit 2026 · 3/10/2026 · Tầng 6, tòa nhà NIC</p>
@@ -609,21 +627,33 @@ function coverHTML(){
     <div class="pcard"><b>Ông Trần Trí Dũng</b><span>SwissEP</span></div>
     <div class="pcard"><b>TS. Nguyễn Trung Dũng</b><span>Chủ tịch VNEI · mời phát biểu 16:16</span></div>
   </div>
-  <table class="ros">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[2]} <span style="color:var(--faint);font-weight:500">${r[1]}</span></td><td>${r[3]}</td></tr>`).join("")}</table></div>`;
+  <table class="ros">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[2]} <span style="color:var(--faint);font-weight:500">${r[1]}</span></td><td>${r[3]}</td></tr>`).join("")}</table>
+  <div class="roles-wrap"><table class="roles"><tr><th>Phân vai</th><th class="son">MC 1 · anh Sơn</th><th class="thoa">MC 2 · ThS. Thoa</th></tr>
+  ${ROLES.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table></div></div>`;
 }
 
+function handoff(s){
+  const k = S.indexOf(s), nx = S[k+1];
+  if (!nx || !nx.blocks) return `<div class="handoff"><div class="hl">Kết thúc</div><div class="hx">Hết tọa đàm. Mời khách mời chụp ảnh chung nếu BTC có sắp xếp.</div></div>`;
+  const b = nx.blocks.find(x => x.who !== "guest");
+  const tmp = document.createElement("div"); tmp.innerHTML = b.html;
+  tmp.querySelectorAll(".fix").forEach(f => f.remove());
+  let t = tmp.textContent.replace(/\s+/g," ").trim(); if (t.length > 150) t = t.slice(0,150).replace(/\s\S*$/,"") + "…";
+  const lead = s.blocks.some(x => x.who === "guest") ? "Khi khách trả lời xong" : "Ngay sau đó";
+  return `<div class="handoff"><div class="hl">Dẫn tiếp · ${lead}</div><div class="hw ${b.who}">${WHO[b.who]}${b.who==="son"?" · đến lượt anh":""}</div><div class="hx">${esc(t)}</div></div>`;
+}
 function renderScript(s){
   if (s.cover) return coverHTML();
   const blocks = s.blocks.map(b => `<div class="blk ${b.who}"><div class="who">${WHO[b.who]}</div><div class="say">${b.html}</div></div>`).join("");
   const ban = s.banner ? `<div class="banner"><div class="bt">${esc(s.banner[0])}</div><div class="bq">${esc(s.banner[1])}</div></div>` : "";
-  return `${ban}<p class="kicker">${hm(s.t[0])} - ${hm(s.t[1])} · ${esc(s.title)}</p><div class="blocks">${blocks}</div>`;
+  return `${ban}<p class="kicker">${hm(s.t[0])} - ${hm(s.t[1])} · ${esc(s.title)}</p><div class="blocks">${blocks}</div>${handoff(s)}`;
 }
 
 function list(cls, title, arr){ return arr && arr.length ? `<div class="nsec ${cls}"><h3>${title}</h3><ul>${arr.map(x=>`<li>${x}</li>`).join("")}</ul></div>` : ""; }
 
 function renderNotes(s){
   const n = s.notes || {};
-  let h = list("follow","Câu hỏi phụ", n.follow) + list("tips","Mẹo điều phối", n.tips) + list("facts","Số liệu cầm tay", n.facts);
+  let h = list("follow","Câu hỏi phụ · đọc được nguyên văn", n.follow) + list("tips","Mẹo điều phối", n.tips) + list("facts","Số liệu cầm tay", n.facts);
   if (n.jot){
     h += `<div class="nsec jot"><h3>Ghi nhanh${s.to? " · "+esc(s.to):""}</h3><textarea id="jot-${s.id}" placeholder="Con số, cam kết, ý đắt...">${esc(store.get("jot."+s.id,""))}</textarea><div class="hint">Lưu trên máy này, hiện lại ở slide Kết luận.</div></div>`;
   }
@@ -739,6 +769,25 @@ document.addEventListener("pointerdown", wake);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
 
 applyFs(); applyNotes(wideMQ.matches); go(i);
+
+/* update pill: compare with version.json next to the page (GitHub Pages only) */
+const APP_VERSION = "20261003-103646";
+{ const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; }
+(() => {
+  if (location.protocol !== "https:" || APP_VERSION === "dev") return;
+  let latest = null;
+  async function check(){
+    try{
+      const res = await fetch("version.json?t=" + Date.now(), {cache:"no-store"});
+      if (!res.ok) return;
+      const v = (await res.json()).v;
+      if (v && v !== APP_VERSION){ latest = v; $("upd").hidden = false; }
+    }catch(e){}
+  }
+  $("updBtn").onclick = () => { const u = new URL(location.href); u.searchParams.set("v", latest || Date.now()); location.replace(u.toString()); };
+  check(); setInterval(check, 60000);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") check(); });
+})();
 })();
 </script>
 
