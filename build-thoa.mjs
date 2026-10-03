@@ -17,8 +17,9 @@ let body = `<h1>Tọa đàm "Từ chính sách - đến thực thi" · VNEI Summ
 <p>Kính gửi chị Hoàng Thị Thoa, em Sơn gửi chị bản kịch bản điều phối đầy đủ, cùng nội dung với bản em dùng trên sân khấu: lời dẫn nguyên văn của hai MC theo từng phần, câu hỏi phụ, mẹo điều phối, thông tin khách mời và phương án dự phòng.</p>
 <h2>Những thay đổi so với kịch bản BTC gửi 2/10</h2>
 <ul>
+<li><b>Bà Phạm Thu Trang</b>, Điều phối viên quốc gia về Thanh niên, UNDP Việt Nam, là khách mời thứ 5: chị giới thiệu ở phần mở đầu và <b>hỏi bà ở cuối Vòng 2 (15:56)</b>; bà có lượt cam kết cuối ở Vòng 4 (em mời).</li>
 <li>Thêm hai lượt mời sau Vòng 4 (em mời): <b>16:14 ông Đỗ Tiến Thịnh</b>, Phó Giám đốc NIC; <b>16:16 TS. Nguyễn Trung Dũng</b>, Chủ tịch VNEI.</li>
-<li>Vòng 4 còn 4 phút; kết luận còn 2 phút; câu chốt nhanh 30 giây của MC 1 thành tùy chọn.</li>
+<li>Vòng 2 các câu rút ngắn để có lượt bà Trang; Vòng 3 kết thúc 16:09; Vòng 4 gồm 5 khách × 60 giây; kết luận còn 2 phút; câu chốt nhanh 30 giây của MC 1 thành tùy chọn.</li>
 <li>Gọi ông Trương Ngọc Kiểm là "ông" ở mọi chỗ (câu của chị ở Vòng 1: "Thưa ông, ĐHQGHN...").</li>
 <li>Phần chị giới thiệu khách: ông Từ Minh Hiệu là <b>Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ</b>, Bộ KH&amp;CN (thay cho "Đại diện Cục...").</li>
 <li>"Nghị quyết 86/2026" ghi đúng là "Nghị quyết 86/NQ-CP"; Vòng 4 ghi "Cục Khởi nghiệp và Doanh nghiệp công nghệ"; thời lượng thống nhất 50 phút.</li>
@@ -71,11 +72,19 @@ main{max-width:780px;margin:0 auto}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.legend span{border:2px solid;border-radius:999px;padding:4px 12px;font-weight:700;font-size:.85em}
 .fsz{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:9}
 .fsz button{width:56px;height:56px;border-radius:50%;border:2px solid var(--blue);background:var(--card);color:var(--blue);font:800 20px 'Be Vietnam Pro',Arial,sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-.fsz button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}h1{font-size:1.55em;line-height:1.25;text-wrap:balance}h2{font-size:1.25em;color:var(--accent);margin:32px 0 10px;border-top:1px solid var(--line);padding-top:18px}
+.fsz button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#upd{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px}
+#upd button.go{display:flex;align-items:center;gap:10px;border:0;border-radius:999px;background:var(--blue);color:#fff;font:800 1.05em 'Be Vietnam Pro',Arial,sans-serif;padding:16px 26px;cursor:pointer;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+#upd button.later{border:1px solid var(--line);background:var(--card);color:var(--dim);border-radius:999px;padding:6px 14px;font:600 .85em 'Be Vietnam Pro',Arial,sans-serif;cursor:pointer}
+[hidden]{display:none!important}
+.ver{color:var(--dim);font-size:.8em;margin-top:24px}h1{font-size:1.55em;line-height:1.25;text-wrap:balance}h2{font-size:1.25em;color:var(--accent);margin:32px 0 10px;border-top:1px solid var(--line);padding-top:18px}
 h3{font-size:1.08em;color:var(--blue);margin:26px 0 6px}h4{margin:14px 0 2px}ul{padding-left:1.2em}li{margin:.3em 0}
 table{border-collapse:collapse;width:100%;font-size:.9em}td,th{border:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}.tw{overflow-x:auto}
 </style></head><body><main><div class="legend"><span style="border-color:var(--blue);color:var(--blue)">Khung xanh: chị Thoa nói</span><span style="border-color:var(--accent);color:var(--accent)">Khung vàng: Sơn nói</span></div>${webBody.replace(/<table/g,'<div class="tw"><table').replace(/<\/table>/g,"</table></div>").replace(/ border="1" cellpadding="6"/g,"")}</main>
+<div id="upd" hidden role="alertdialog" aria-label="Có bản mới"><button type="button" class="go" id="updGo">↻ Có bản mới · Bấm để cập nhật</button><button type="button" class="later" id="updLater">Để sau</button></div>
+<p class="ver" id="ver"></p>
 <div class="fsz"><button type="button" id="fsDown" aria-label="Chữ nhỏ hơn">A−</button><button type="button" id="fsUp" aria-label="Chữ to hơn">A+</button></div>
 <script>(function(){var k='thoaFs',f=1;try{f=parseFloat(localStorage.getItem(k))||1}catch(e){}function a(){f=Math.min(1.8,Math.max(.8,Math.round(f*10)/10));document.documentElement.style.setProperty('--fs',f);try{localStorage.setItem(k,f)}catch(e){}}document.getElementById('fsUp').onclick=function(){f+=.1;a()};document.getElementById('fsDown').onclick=function(){f-=.1;a()};a()})();</script>
+<script>(function(){var V="dev";var m=V.match(/^(\\d{4})(\\d{2})(\\d{2})-(\\d{2})(\\d{2})/);document.getElementById("ver").textContent=m?"Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5]:"";if(location.protocol!=="https:"||V==="dev")return;var latest=null,later=0;function check(){fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){if(!j||!j.v||j.v===V){document.getElementById("upd").hidden=true;return}latest=j.v;if(Date.now()-later<600000)return;document.getElementById("upd").hidden=false}).catch(function(){})}document.getElementById("updGo").onclick=function(){document.getElementById("upd").hidden=true;var u=new URL(location.href);u.searchParams.set("v",latest||Date.now());location.replace(u.toString())};document.getElementById("updLater").onclick=function(){document.getElementById("upd").hidden=true;later=Date.now()};check();setInterval(check,60000);document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")check()})})();</script>
 </body></html>`);
 console.log("ok", S.length, "slides");

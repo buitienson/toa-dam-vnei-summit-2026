@@ -8,6 +8,9 @@ SRC=../toa-dam-vnei-summit.html
 { printf '<!doctype html>\n<html lang="vi">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="robots" content="noindex">\n'
   sed '/^<\/style>$/q' "$SRC"; printf '</head>\n<body>\n'; sed '1,/^<\/style>$/d' "$SRC"; printf '\n</body>\n</html>\n'; } > index.html
 sed -i '' -E "s/const APP_VERSION = \"[^\"]*\";/const APP_VERSION = \"$V\";/" index.html
+node build-thoa.mjs >/dev/null
+sed -i '' -E "s/var V=\"[^\"]*\";/var V=\"$V\";/" chi-thoa.html
+python3 make-artifact-thoa.py
 printf '{"v":"%s"}\n' "$V" > version.json
 git add -A
 git commit -q -m "${1:-Cập nhật} ($V)
