@@ -279,7 +279,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
           <li>Vòng 4: "Cục ĐMST/NATEC" → "Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
           <li>Vòng 3: thêm dấu ↔ vào "University ↔ Policy maker".</li>
           <li><b>Thêm</b> bảng phân vai MC 1/MC 2 ở slide đầu, khung "Dẫn tiếp" cuối mỗi slide.</li>
-          <li><b>Thêm</b> lượt mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI (16:16, 2 phút). Vòng 4 còn 5 phút, kết luận còn 2 phút.</li>
+          <li><b>Thêm</b> lượt mời ông Đỗ Tiến Thịnh, Phó GĐ NIC (16:14) rồi TS. Nguyễn Trung Dũng, Chủ tịch VNEI (16:16), mỗi lượt 2 phút. Vòng 4 còn 4 phút, chốt nhanh thành tùy chọn, kết luận còn 2 phút.</li>
         </ul>
       </div>
       <div class="ver" id="ver"></div>
@@ -312,8 +312,8 @@ const S = [
   notes:{
     tips:[
       "Xác nhận với BTC <b>chức danh chính xác của ông Từ Minh Hiệu</b> (không có trên trang lãnh đạo Cục).",
-      "Báo trước với <b>TS. Nguyễn Trung Dũng</b> (Chủ tịch VNEI) là sẽ mời ông phát biểu khoảng 2 phút trước phần kết luận, và nhờ BTC chuẩn bị mic cầm tay ở chỗ ông ngồi.",
-      "Báo chị Thoa: lượt hỏi ông Nguyễn Trung Dũng là phần thêm, nên Vòng 4 rút còn 5 phút và kết luận còn 2 phút.",
+      "Báo trước với <b>ông Đỗ Tiến Thịnh</b> (Phó GĐ NIC) và <b>TS. Nguyễn Trung Dũng</b> (Chủ tịch VNEI): sau Vòng 4 sẽ mời lần lượt mỗi ông khoảng 2 phút. Nhờ BTC chuẩn bị mic cầm tay ở chỗ hai ông ngồi.",
+      "Báo chị Thoa: thêm 2 lượt (NIC, Chủ tịch VNEI) sau Vòng 4. Vòng 4 rút còn 4 phút, câu chốt nhanh 30 giây chỉ dùng khi dư giờ, kết luận còn 2 phút.",
       "Thống nhất với chị Thoa: ai cầm đồng hồ, ký hiệu tay khi khách quá giờ.",
       "Hôm nay có <b>hai ông Dũng</b>: Trần Trí Dũng (SwissEP, khách mời) và Nguyễn Trung Dũng (Chủ tịch VNEI). Luôn gọi đủ họ tên.",
       "Chạm ô <b>Bắt đầu tính giờ</b> đúng lúc mở tọa đàm. Bắt đầu muộn thì lịch tự dịch theo."
@@ -446,8 +446,8 @@ const S = [
     tips:["Nếu đang chậm hơn 2 phút, đây là câu nên rút ngắn nhất.","Câu mở Vòng 4 là của anh."],
     jot:true
   }},
-{ id:"r4", seg:"Vòng 4 · Từ pilot đến scale", t:[40,45], title:"Cam kết hành động 60 giây", who:"both", to:"Cả 4 khách",
-  banner:["Vòng 4 – “Từ pilot đến scale”","Kịch bản gốc 7 phút · rút còn 5 phút để thêm lượt Chủ tịch VNEI"],
+{ id:"r4", seg:"Vòng 4 · Từ pilot đến scale", t:[40,44], title:"Cam kết hành động 60 giây", who:"both", to:"Cả 4 khách",
+  banner:["Vòng 4 – “Từ pilot đến scale”","Kịch bản gốc 7 phút · rút còn 4 phút để thêm lượt NIC và Chủ tịch VNEI"],
   blocks:[
     {who:"son", html:`<p>Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ “Problem” sang “Action”. Ở vòng này, chúng tôi áp dụng luật: Mỗi diễn giả có đúng 60 giây cam kết hành động!</p>`},
     {who:"thoa", html:`<p>Câu hỏi chung cho cả 4 vị khách mời:</p>
@@ -458,17 +458,32 @@ const S = [
     tips:["Anh mời lượt 1 và lượt 3: \"Xin mời ông Trương Ngọc Kiểm.\" / \"Xin mời ông Từ Minh Hiệu.\"","Câu chặn lịch sự khi quá giờ: \"Xin cảm ơn ông, chúng ta giữ đúng 60 giây để kịp nghe cam kết của các khách mời còn lại.\""],
     jot:true
   }},
-{ id:"quick", seg:"Chốt nhanh", t:[45,46], title:"MC 1 chốt nhanh · 30 giây", who:"son",
+{ id:"thinh", seg:"Góc nhìn NIC", t:[44,46], title:"Mời ông Đỗ Tiến Thịnh, Phó Giám đốc NIC", who:"son", to:"Đỗ Tiến Thịnh", added:true,
+  banner:["Phần thêm – 2 phút","Sau khi mỗi diễn giả đã có một lượt cam kết"],
   blocks:[
-    {who:"son", html:`<span class="ask">“Một câu hỏi siêu ngắn 30 giây cho cả panel: Đến VNEI Summit 2027, cộng đồng cần nhìn thấy tín hiệu/chỉ số cụ thể nào để khẳng định năm 2026 này thực sự là năm chuyển đổi mô hình ĐMST đại học?”</span>`},
-    {who:"guest", html:"(Panel điểm danh nhanh 1-2 từ khóa)"}
+    {who:"son", html:`<p>Xin trân trọng cảm ơn bốn vị diễn giả với những cam kết rất cụ thể. Thưa quý vị, Hội nghị hôm nay được tổ chức tại Trung tâm Đổi mới sáng tạo Quốc gia. Trước khi khép lại phiên tọa đàm, chúng tôi xin trân trọng kính mời ông Đỗ Tiến Thịnh, Phó Giám đốc Trung tâm Đổi mới sáng tạo Quốc gia (NIC), chia sẻ góc nhìn của đơn vị đồng tổ chức.</p>
+      <span class="ask">“Thưa ông, NIC đang là đầu mối kết nối các tập đoàn công nghệ, các quỹ đầu tư và mạng lưới đổi mới sáng tạo trong và ngoài nước. Từ vị trí đó, theo ông, NIC có thể đồng hành cùng các trường đại học như thế nào để những mô hình vừa được chia sẻ hôm nay đến được với doanh nghiệp và nhà đầu tư nhanh hơn, hiệu quả hơn?”</span>`},
+    {who:"guest", html:"(Ông Đỗ Tiến Thịnh chia sẻ ~2 phút)"}
   ],
-  notes:{ tips:["Đi theo hàng ghế, mỗi người 1-2 từ khóa."], jot:true }},
+  notes:{
+    follow:[
+      "Thưa ông, ông từng nhấn mạnh doanh nghiệp khởi nghiệp sáng tạo cần “vốn mồi” từ Nhà nước. Theo ông, các doanh nghiệp spin-off từ trường đại học có thể tiếp cận nguồn vốn mồi này qua những kênh nào?",
+      "Thưa ông, NIC đã có nhiều chương trình hợp tác với các tập đoàn như Samsung. Các trường đại học có thể tham gia sâu hơn vào những chương trình này bằng cách nào?"
+    ],
+    tips:[
+      "Báo trước với ông Thịnh và nhờ BTC chuẩn bị mic cầm tay ở chỗ ông ngồi.",
+      "Ông Thịnh là Phó Giám đốc NIC, đơn vị đồng tổ chức và chủ nhà địa điểm. Lời mời nên mở bằng lời cảm ơn NIC.",
+      "Anh là mentor Samsung Solve for Tomorrow, chương trình NIC phối hợp với Samsung. Có thể nhắc nhẹ nếu phù hợp.",
+      "Nếu ông không có mặt, bỏ slide này, sang thẳng lượt mời TS. Nguyễn Trung Dũng."
+    ],
+    facts:["Ông Đỗ Tiến Thịnh: Phó Giám đốc Trung tâm Đổi mới sáng tạo Quốc gia (NIC). NIC đồng tổ chức VNEI Summit 2026 tại tòa nhà NIC, số 1 Nguyễn Hữu An."],
+    jot:true
+  }},
 { id:"vnei", seg:"Góc nhìn VNEI", t:[46,48], title:"Mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI", who:"son", to:"Nguyễn Trung Dũng", added:true,
-  banner:["Phần thêm – 2 phút","Không có trong kịch bản BTC gửi 2/10"],
+  banner:["Phần thêm – 2 phút","Sau ông Đỗ Tiến Thịnh, trước kết luận"],
   blocks:[
-    {who:"son", html:`<p>Xin cảm ơn các diễn giả. Trước khi bước vào phần đúc kết, cho phép chúng tôi mời một góc nhìn từ chính mạng lưới tổ chức Hội nghị hôm nay. Xin kính mời TS. Nguyễn Trung Dũng, Chủ tịch Mạng lưới Đổi mới sáng tạo và Khởi nghiệp Đại học, Cao đẳng Việt Nam (VNEI).</p>
-      <span class="ask">“Thưa ông, sau những gì vừa được chia sẻ từ cơ quan quản lý, từ các trường và từ góc nhìn quốc tế, theo ông, để những mô hình như ở ĐHQGHN hay HUST không chỉ là câu chuyện của vài trường đầu tàu mà trở thành năng lực chung của cả hệ thống đại học, cao đẳng, mạng lưới VNEI sẽ đóng vai trò gì trong một năm tới?”</span>`},
+    {who:"son", html:`<p>Xin trân trọng cảm ơn ông Đỗ Tiến Thịnh. Và trước khi bước vào phần đúc kết, cho phép chúng tôi mời một góc nhìn từ chính mạng lưới tổ chức Hội nghị hôm nay. Xin trân trọng kính mời TS. Nguyễn Trung Dũng, Chủ tịch Mạng lưới Đổi mới sáng tạo và Khởi nghiệp Đại học, Cao đẳng Việt Nam (VNEI).</p>
+      <span class="ask">“Thưa ông, sau những gì vừa được chia sẻ từ cơ quan quản lý, từ các trường, từ góc nhìn quốc tế và từ NIC, theo ông, để những mô hình như ở ĐHQGHN hay HUST không chỉ là câu chuyện của vài trường đầu tàu mà trở thành năng lực chung của cả hệ thống đại học, cao đẳng, mạng lưới VNEI sẽ đóng vai trò gì trong một năm tới?”</span>`},
     {who:"guest", html:"(TS. Nguyễn Trung Dũng chia sẻ ~2 phút)"}
   ],
   notes:{
@@ -476,12 +491,19 @@ const S = [
     tips:[
       "Ông Nguyễn Trung Dũng đồng thời là <b>Tổng Giám đốc BK Holdings</b>, tức cấp trên của ông Hiệp. Hỏi từ góc độ mạng lưới VNEI, tránh lặp câu chuyện spin-off của HUST.",
       "Luôn gọi đủ họ tên \"Nguyễn Trung Dũng\" để không lẫn với ông Trần Trí Dũng (SwissEP).",
-      "Nếu ông không có mặt hoặc đang chậm giờ, bỏ slide này, sang thẳng kết luận.",
+      "Nếu ông không có mặt, bỏ slide này, sang thẳng kết luận.",
       "Câu trả lời của ông là cầu nối tự nhiên sang thông điệp 3 (\"mạng lưới VNEI cần nhanh chóng được chuẩn hóa, hoàn thiện và nhân rộng\")."
     ],
     facts:["TS. Nguyễn Trung Dũng: Chủ tịch VNEI nhiệm kỳ mới; Tổng Giám đốc BK Holdings, ĐH Bách khoa Hà Nội (theo hồ sơ trong Atlas-Talk)."],
     jot:true
   }},
+{ id:"quick", seg:"Chốt nhanh", t:[48,48], title:"MC 1 chốt nhanh · chỉ dùng khi dư giờ", optional:true, who:"son",
+  blocks:[
+    {who:"son", html:`<span class="ask">“Một câu hỏi siêu ngắn 30 giây cho cả panel: Đến VNEI Summit 2027, cộng đồng cần nhìn thấy tín hiệu/chỉ số cụ thể nào để khẳng định năm 2026 này thực sự là năm chuyển đổi mô hình ĐMST đại học?”</span>`},
+    {who:"guest", html:"(Panel điểm danh nhanh 1-2 từ khóa)"}
+  ],
+  banner:["Tùy chọn","Kịch bản đã có thêm lượt NIC và Chủ tịch VNEI: chỉ hỏi câu này khi còn dư thời gian"],
+  notes:{ tips:["Mặc định BỎ QUA slide này, bấm Tiếp sang kết luận.","Nếu dùng: đi theo hàng ghế, mỗi người 1-2 từ khóa."], jot:true }},
 { id:"close", seg:"Thông điệp kết luận", t:[48,50], title:"Thông điệp kết luận", who:"both",
   banner:["Thông điệp kết luận","Kịch bản gốc 3 phút · còn 2 phút"],
   blocks:[
@@ -493,7 +515,7 @@ const S = [
       <p>Xin trân trọng cảm ơn!</p>`}
   ],
   notes:{
-    tips:["Có thể thêm cảm ơn TS. Nguyễn Trung Dũng ngay sau \"4 vị diễn giả\".","Nếu còn thời gian, nhắc một con số hoặc cam kết đắt nhất của khách trước thông điệp 3 (xem ghi nhanh bên dưới)."],
+    tips:["Có thể thêm cảm ơn ông Đỗ Tiến Thịnh và TS. Nguyễn Trung Dũng ngay sau \"4 vị diễn giả\".","Nếu còn thời gian, nhắc một con số hoặc cam kết đắt nhất của khách trước thông điệp 3 (xem ghi nhanh bên dưới)."],
     recap:true
   }}
 ];
@@ -509,6 +531,8 @@ guests:`
     <ul><li>Đồng thời là Giám đốc Ươm tạo của BK Holdings và Giám đốc quản lý quỹ BK Fund.</li><li>BK Holdings là hệ thống quản lý đầu tư và chuyển giao công nghệ của HUST; trong đề án sandbox, đây là bên đứng tên phần vốn của trường tại spin-off.</li><li>Lượt hỏi: V1 (anh), V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
   <div class="gcard"><h4>Ông Trần Trí Dũng</h4><div class="role">Quản lý chương trình khu vực Hà Nội, SwissEP</div>
     <ul><li>Từ 2014 hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong (Myanmar, Campuchia, Lào, Thái Lan, Việt Nam).</li><li>Từ 2004 làm tư vấn quản trị chiến lược cho doanh nghiệp tư nhân.</li><li>Hồ sơ công khai ghi là Phó Chủ tịch thường trực VSMA (mạng lưới cố vấn khởi nghiệp, VCCI).</li><li>Lượt hỏi: V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
+  <div class="gcard"><h4>Ông Đỗ Tiến Thịnh</h4><div class="role">Phó Giám đốc Trung tâm Đổi mới sáng tạo Quốc gia (NIC)</div>
+    <ul><li>NIC đồng tổ chức VNEI Summit 2026, chủ nhà địa điểm.</li><li>Từng phát biểu về "vốn mồi" của Nhà nước cho khởi nghiệp sáng tạo, AI hiện thân, hệ thống nhiều trung tâm ĐMST phối hợp.</li><li>Anh mời phát biểu ~2 phút ngay sau Vòng 4.</li></ul></div>
   <div class="gcard"><h4>TS. Nguyễn Trung Dũng</h4><div class="role">Chủ tịch VNEI · Tổng Giám đốc BK Holdings</div>
     <ul><li>Không có trong danh sách khách của kịch bản BTC. Anh mời phát biểu ~2 phút trước kết luận.</li><li>Là cấp trên của ông Phạm Tuấn Hiệp ở BK Holdings: hỏi từ góc độ mạng lưới VNEI.</li><li>Luôn gọi đủ họ tên, tránh lẫn với ông Trần Trí Dũng.</li></ul></div>
   <div class="gcard"><h4>ThS. Hoàng Thị Thoa</h4><div class="role">Trường ĐH Công thương TP.HCM · đồng điều phối (MC 2)</div>
@@ -567,7 +591,7 @@ backup:`
 <ul>
 <li><b>Chậm 1-2 phút</b>: bỏ câu hỏi phụ, chuyển câu nhanh hơn.</li>
 <li><b>Chậm 3 phút</b>: rút câu hỏi của chị Thoa cho ông Dũng ở Vòng 3 xuống 1 phút, hoặc gộp vào lượt cam kết ở Vòng 4.</li>
-<li><b>Chậm 4 phút trở lên</b>: bỏ phần "Chốt nhanh 30 giây"; rút lượt Chủ tịch VNEI còn 1 phút.</li>
+<li><b>Chậm 4 phút trở lên</b>: xin hai lượt NIC và Chủ tịch VNEI rút còn khoảng 1 phút mỗi lượt.</li>
 <li>Không cắt Vòng 4 và kết luận. Đó là phần hội trường nhớ.</li>
 </ul>
 <h3>Khách nói quá giờ</h3>
@@ -584,7 +608,8 @@ backup:`
 <ul>
 <li><b>Vắng ông Hiệu</b>: câu V1 chuyển cho ông Trần Trí Dũng ("nhìn từ hệ sinh thái"); câu V2 về NQ 86 và câu V3 về quy chế nội bộ gộp làm một, hỏi ông Trần Trí Dũng.</li>
 <li><b>Vắng ông Trần Trí Dũng</b>: câu V2 chuyển cho ông Hiệu; bỏ câu V3 của chị Thoa.</li>
-<li><b>Vắng TS. Nguyễn Trung Dũng</b>: bỏ slide Góc nhìn VNEI, trả 2 phút cho Vòng 4 và kết luận như kịch bản gốc.</li>
+<li><b>Vắng ông Đỗ Tiến Thịnh</b>: bỏ slide Góc nhìn NIC; lời mời TS. Nguyễn Trung Dũng bỏ câu "Xin trân trọng cảm ơn ông Đỗ Tiến Thịnh".</li>
+<li><b>Vắng TS. Nguyễn Trung Dũng</b>: bỏ slide Góc nhìn VNEI, dùng 2 phút cho câu chốt nhanh 30 giây hoặc kéo dài Vòng 4.</li>
 <li><b>Vắng một trong hai trường</b>: câu "ba con số" và "một cơ chế" hỏi riêng trường còn lại, cho 3 phút.</li>
 </ul>
 <h3>Sự cố kỹ thuật</h3>
@@ -616,12 +641,13 @@ const ROLES = [
   ["Vòng 2","\"Chính xác!\" rồi hỏi ba con số (ông Kiểm, ông Hiệp) · hỏi ông Trần Trí Dũng","Dẫn \"Kết quả đâu?\" · hỏi ông Hiệu về NQ 86"],
   ["Vòng 3","Mở \"Điểm nghẽn thực thi\" · hỏi ông Hiệu (University ↔ Policy maker)","Hỏi hai trường MỘT cơ chế · hỏi ông Trần Trí Dũng"],
   ["Vòng 4","Nêu luật 60 giây · mời ông Kiểm, ông Hiệu","Câu hỏi chung · mời ông Hiệp, ông Trần Trí Dũng"],
-  ["Chốt nhanh","Câu hỏi 30 giây cho cả panel","-"],
-  ["Góc nhìn VNEI (thêm)","Mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI","-"],
+  ["Góc nhìn NIC (thêm)","Cảm ơn 4 diễn giả, mời ông Đỗ Tiến Thịnh, Phó GĐ NIC","-"],
+  ["Góc nhìn VNEI (thêm)","Cảm ơn ông Thịnh, mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI","-"],
+  ["Chốt nhanh (tùy chọn)","Câu hỏi 30 giây cho cả panel, chỉ khi dư giờ","-"],
   ["Kết luận","Thông điệp 3, cảm ơn, hẹn Summit 2027","Mở lời, thông điệp 1 và 2"]
 ];
 function coverHTML(){
-  const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","5'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới? (+ chốt nhanh 30s)"],["16:16","2'","Góc nhìn VNEI","TS. Nguyễn Trung Dũng, Chủ tịch VNEI (phần thêm)"],["16:18","2'","Kết luận","Thông điệp đúc kết"]];
+  const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","4'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới?"],["16:14","2'","Góc nhìn NIC","Ông Đỗ Tiến Thịnh, Phó Giám đốc NIC (phần thêm)"],["16:16","2'","Góc nhìn VNEI","TS. Nguyễn Trung Dũng, Chủ tịch VNEI (phần thêm)"],["16:18","2'","Kết luận","Thông điệp đúc kết"]];
   return `<div class="cover"><p class="kicker">VNEI Summit 2026 · 3/10/2026 · Tầng 6, tòa nhà NIC</p>
   <h1>Từ chính sách <em>đến thực thi</em></h1>
   <p class="sub">Tọa đàm 15:30 - 16:20 · 50 phút · số 1 Nguyễn Hữu An, Cầu Giấy, Hà Nội</p>
@@ -632,6 +658,7 @@ function coverHTML(){
     <div class="pcard"><b>Ông Trương Ngọc Kiểm</b><span>GĐ Công viên ĐMST, ĐHQGHN</span></div>
     <div class="pcard"><b>Ông Phạm Tuấn Hiệp</b><span>GĐ Đầu tư, BK Holdings</span></div>
     <div class="pcard"><b>Ông Trần Trí Dũng</b><span>SwissEP</span></div>
+    <div class="pcard"><b>Ông Đỗ Tiến Thịnh</b><span>Phó GĐ NIC · mời phát biểu 16:14</span></div>
     <div class="pcard"><b>TS. Nguyễn Trung Dũng</b><span>Chủ tịch VNEI · mời phát biểu 16:16</span></div>
   </div>
   <table class="ros">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[2]} <span style="color:var(--faint);font-weight:500">${r[1]}</span></td><td>${r[3]}</td></tr>`).join("")}</table>
@@ -798,7 +825,7 @@ window.addEventListener("orientationchange", () => setTimeout(refit, 250));
 window.addEventListener("resize", () => setTimeout(refit, 100));
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-104907";
+const APP_VERSION = "20261003-105443";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
