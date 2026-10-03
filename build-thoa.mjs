@@ -17,9 +17,8 @@ let body = `<h1>Tọa đàm "Từ chính sách - đến thực thi" · VNEI Summ
 <p>Kính gửi chị Hoàng Thị Thoa, em Sơn gửi chị bản kịch bản điều phối đầy đủ, cùng nội dung với bản em dùng trên sân khấu: lời dẫn nguyên văn của hai MC theo từng phần, câu hỏi phụ, mẹo điều phối, thông tin khách mời và phương án dự phòng.</p>
 <h2>Những thay đổi so với kịch bản BTC gửi 2/10</h2>
 <ul>
-<li><b>Bà Phạm Thu Trang</b>, Điều phối viên quốc gia về Thanh niên, UNDP Việt Nam, là khách mời thứ 5: chị giới thiệu ở phần mở đầu và <b>hỏi bà ở cuối Vòng 2 (15:56)</b>; bà có lượt cam kết cuối ở Vòng 4 (em mời).</li>
 <li>Thêm hai lượt mời sau Vòng 4 (em mời): <b>16:14 ông Đỗ Tiến Thịnh</b>, Phó Giám đốc NIC; <b>16:16 TS. Nguyễn Trung Dũng</b>, Chủ tịch VNEI.</li>
-<li>Vòng 2 các câu rút ngắn để có lượt bà Trang; Vòng 3 kết thúc 16:09; Vòng 4 gồm 5 khách × 60 giây; kết luận còn 2 phút; câu chốt nhanh 30 giây của MC 1 thành tùy chọn.</li>
+<li>Vòng 4 còn 4 phút; kết luận còn 2 phút; câu chốt nhanh 30 giây của MC 1 thành tùy chọn.</li>
 <li>Gọi ông Trương Ngọc Kiểm là "ông" ở mọi chỗ (câu của chị ở Vòng 1: "Thưa ông, ĐHQGHN...").</li>
 <li>Phần chị giới thiệu khách: ông Từ Minh Hiệu là <b>Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ</b>, Bộ KH&amp;CN (thay cho "Đại diện Cục...").</li>
 <li>"Nghị quyết 86/2026" ghi đúng là "Nghị quyết 86/NQ-CP"; Vòng 4 ghi "Cục Khởi nghiệp và Doanh nghiệp công nghệ"; thời lượng thống nhất 50 phút.</li>
