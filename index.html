@@ -50,6 +50,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 .budget.warn{color:var(--warn);border-color:rgba(255,181,71,.5)}
 .budget.over{color:var(--bg);background:var(--over);border-color:var(--over)}
 .budget.idle{color:var(--faint)}
+.vchip{font:500 11px var(--mono);color:var(--faint);border:1px solid var(--border);border-radius:6px;padding:2px 6px;white-space:nowrap}
 .tbtn{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:8px 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
 .tbtn.gold{background:var(--gold);color:#1B1206;border-color:var(--gold)}
 .tools{display:flex;gap:8px;flex-wrap:wrap}
@@ -231,6 +232,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
     <div class="seg"><div class="seg-name" id="segName">Chuẩn bị</div><div class="seg-time" id="segTime">15:30 - 16:20 · 50 phút</div></div>
     <div class="clockbox">
       <span class="now" id="now">--:--</span>
+      <span class="vchip" id="vchip"></span>
       <button class="budget idle" id="budget" title="Chạm để bắt đầu tính giờ từ lúc này">Bắt đầu tính giờ</button>
     </div>
     <div class="tools">
@@ -771,8 +773,8 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 applyFs(); applyNotes(wideMQ.matches); go(i);
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-103646";
-{ const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; }
+const APP_VERSION = "20261003-103831";
+{ const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
   let latest = null;
