@@ -61,7 +61,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 .script,.notes{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;min-width:0}
 .script{padding:clamp(16px,3vw,40px) clamp(16px,3.4vw,48px) 48px;touch-action:pan-y}
 .notes{padding:18px clamp(16px,2.4vw,30px) 40px;background:var(--surface);display:none}
-.notes-head{display:none}
+.notes-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px;position:sticky;top:-18px;background:var(--surface);padding:6px 0;z-index:1}
+.notes-head b{font-size:14px;color:var(--gold);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#notesTab{position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:4;border:1px solid var(--border);border-right:0;border-radius:12px 0 0 12px;background:var(--surface);color:var(--gold);font:700 13px var(--font);padding:14px 8px;writing-mode:vertical-rl;cursor:pointer;display:none}
+@media (min-width:1000px) and (orientation:landscape){ body:not(.notes-open):not(.focus) #notesTab{display:block} }
 /* wide landscape iPad: notes as a side column */
 @media (min-width:1000px) and (orientation:landscape){
   body.notes-open .main{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
@@ -70,8 +73,6 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 /* iPad mini, portrait, phones: the script gets the whole screen, notes slide up as a drawer */
 @media not all and (min-width:1000px) and (orientation:landscape){
   body.notes-open .notes{display:block;position:absolute;left:0;right:0;bottom:0;height:62%;z-index:5;border-top:2px solid var(--gold);border-radius:16px 16px 0 0;box-shadow:0 -18px 40px rgba(0,0,0,.55)}
-  .notes-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;position:sticky;top:-18px;background:var(--surface);padding:6px 0}
-  .notes-head b{font-size:15px;color:var(--gold)}
 }
 
 .banner{border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:0 0 18px;background:var(--surface)}
@@ -240,6 +241,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
       <button class="tbtn" id="btnToc">Mục lục</button>
       <button class="tbtn" id="btnRef">Tra nhanh</button>
       <button class="tbtn" id="btnNotes">Ghi chú</button>
+      <button class="tbtn" id="btnFull">Toàn màn hình</button>
       <button class="tbtn" id="btnSmaller" aria-label="Chữ nhỏ hơn">A−</button>
       <button class="tbtn" id="btnBigger" aria-label="Chữ to hơn">A+</button>
     </div>
@@ -248,6 +250,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
   <main class="main">
     <section class="script" id="script"></section>
     <aside class="notes" id="notes"></aside>
+    <button id="notesTab" type="button">‹ Ghi chú</button>
   </main>
 
   <footer class="bottom">
@@ -665,7 +668,7 @@ function renderNotes(s){
     const items = S.filter(x=>x.notes&&x.notes.jot).map(x=>({s:x, v:store.get("jot."+x.id,"").trim()})).filter(x=>x.v);
     h += `<div class="nsec"><h3>Đã ghi trong tọa đàm</h3>${items.length? `<div class="recap">${items.map(x=>`<div><b>${esc(x.s.to||x.s.title)}</b> · ${esc(x.v).replace(/\n/g,"<br>")}</div>`).join("")}</div>` : `<p style="color:var(--faint);font-size:14px;margin:0">Chưa có ghi chú nào. Các ô "Ghi nhanh" ở từng slide sẽ tập hợp về đây.</p>`}</div>`;
   }
-  const head = `<div class="notes-head"><b>Ghi chú · ${esc(s.title)}</b><button class="tbtn" data-notes-close>Đóng</button></div>`;
+  const head = `<div class="notes-head"><b>Câu hỏi phụ &amp; mẹo điều phối</b><button class="tbtn" data-notes-close>${wideMQ.matches ? "Ẩn ›  Xem toàn màn hình" : "Đóng"}</button></div>`;
   return head + (h || `<p style="color:var(--faint)">Không có ghi chú.</p>`);
 }
 
@@ -761,10 +764,26 @@ function applyFs(){ document.documentElement.style.setProperty("--fs", fs); stor
 $("btnSmaller").onclick = () => { fs = Math.max(.8, +(fs-.1).toFixed(2)); applyFs(); };
 $("btnBigger").onclick = () => { fs = Math.min(1.5, +(fs+.1).toFixed(2)); applyFs(); };
 const wideMQ = window.matchMedia("(min-width:1000px) and (orientation:landscape)");
-function applyNotes(open){ document.body.classList.toggle("notes-open", open); $("btnNotes").textContent = open ? "Ẩn ghi chú" : "Ghi chú"; $("btnNotes").classList.toggle("gold", !open && !wideMQ.matches); }
-$("btnNotes").onclick = () => applyNotes(!document.body.classList.contains("notes-open"));
-notesEl.addEventListener("click", e => { if (e.target.closest("[data-notes-close]")) applyNotes(false); });
-try { wideMQ.addEventListener("change", () => applyNotes(wideMQ.matches)); } catch(e){}
+function applyNotes(open, save){ if (save && wideMQ.matches) store.set("wideNotes", open); document.body.classList.toggle("notes-open", open); $("btnNotes").textContent = open ? "Ẩn ghi chú" : "Ghi chú"; $("btnNotes").classList.toggle("gold", !open && !wideMQ.matches); }
+$("btnNotes").onclick = () => applyNotes(!document.body.classList.contains("notes-open"), true);
+$("notesTab").onclick = () => applyNotes(true, true);
+notesEl.addEventListener("click", e => { if (e.target.closest("[data-notes-close]")) applyNotes(false, true); });
+const wideDefault = () => wideMQ.matches && store.get("wideNotes", true);
+try { wideMQ.addEventListener("change", () => { applyNotes(wideDefault()); go(i); }); } catch(e){}
+/* "Toàn màn hình": hide the notes and, where the browser allows (iPad Safari: webkit prefix), go full screen */
+(() => {
+  const el = document.documentElement, btn = $("btnFull");
+  const req = el.requestFullscreen || el.webkitRequestFullscreen, exit = document.exitFullscreen || document.webkitExitFullscreen;
+  const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  let before = null;
+  const sync = () => { const on = document.body.classList.contains("focus"); btn.textContent = on ? "Thoát toàn màn hình" : "Toàn màn hình"; btn.classList.toggle("gold", on); };
+  function enter(){ before = document.body.classList.contains("notes-open"); document.body.classList.add("focus"); applyNotes(false); try { const r = req && req.call(el); if (r && r.catch) r.catch(()=>{}); } catch(e){} sync(); }
+  function leave(){ document.body.classList.remove("focus"); if (before !== null) applyNotes(before); try { if (isFull()) { const r = exit.call(document); if (r && r.catch) r.catch(()=>{}); } } catch(e){} sync(); }
+  btn.onclick = () => document.body.classList.contains("focus") ? leave() : enter();
+  const onFs = () => { if (!isFull() && document.body.classList.contains("focus") && req) leave(); };
+  document.addEventListener("fullscreenchange", onFs); document.addEventListener("webkitfullscreenchange", onFs);
+  sync();
+})();
 
 /* keep the screen awake on stage, where allowed */
 let lock = null;
@@ -772,10 +791,10 @@ async function wake(){ try{ if ("wakeLock" in navigator && !lock){ lock = await 
 document.addEventListener("pointerdown", wake);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
 
-applyFs(); applyNotes(wideMQ.matches); go(i);
+applyFs(); applyNotes(wideDefault()); go(i);
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-104102";
+const APP_VERSION = "20261003-104354";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
