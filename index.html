@@ -31,6 +31,7 @@
   --fs:1;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow:hidden;-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit}
@@ -774,7 +775,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 applyFs(); applyNotes(wideMQ.matches); go(i);
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-104000";
+const APP_VERSION = "20261003-104102";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
