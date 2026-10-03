@@ -259,6 +259,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 <div id="upd" hidden role="alertdialog" aria-modal="true" aria-label="Có phiên bản mới">
   <button id="updBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg>Có bản mới · Bấm để cập nhật</button>
   <p>Slide đang mở, ghi nhanh và đồng hồ được giữ nguyên.</p>
+  <button id="updLater" type="button" class="tbtn">Để sau</button>
 </div>
 
 <div class="sheet" id="tocSheet" hidden>
@@ -773,7 +774,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 applyFs(); applyNotes(wideMQ.matches); go(i);
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-103831";
+const APP_VERSION = "20261003-104000";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
@@ -783,10 +784,23 @@ const APP_VERSION = "20261003-103831";
       const res = await fetch("version.json?t=" + Date.now(), {cache:"no-store"});
       if (!res.ok) return;
       const v = (await res.json()).v;
-      if (v && v !== APP_VERSION){ latest = v; $("upd").hidden = false; }
+      if (!v || v === APP_VERSION){ $("upd").hidden = true; return; }
+      latest = v;
+      const tried = store.get("updTried", null), later = store.get("updLater", null), now = Date.now();
+      if (tried && tried.v === v && now - tried.at < 120000) return;   // just reloaded, server still catching up
+      if (later && later.v === v && now - later.at < 600000) return;   // "Để sau" for 10 minutes
+      $("upd").hidden = false;
     }catch(e){}
   }
-  $("updBtn").onclick = () => { const u = new URL(location.href); u.searchParams.set("v", latest || Date.now()); location.replace(u.toString()); };
+  $("updBtn").onclick = async () => {
+    $("upd").hidden = true;
+    const v = latest || String(Date.now());
+    store.set("updTried", {v, at: Date.now()});
+    const u = new URL(location.href); u.searchParams.set("v", v);
+    try { await fetch(u.toString(), {cache:"reload"}); } catch(e){}
+    location.replace(u.toString());
+  };
+  $("updLater").onclick = () => { $("upd").hidden = true; store.set("updLater", {v: latest, at: Date.now()}); };
   check(); setInterval(check, 60000);
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") check(); });
 })();
