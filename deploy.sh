@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")"
 V=$(date +%Y%m%d-%H%M%S)
 SRC=../toa-dam-vnei-summit.html
-{ printf '<!doctype html>\n<html lang="vi">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="robots" content="noindex">\n'
+{ printf '<!doctype html>\n<html lang="vi">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="robots" content="noindex">\n'
   sed '/^<\/style>$/q' "$SRC"; printf '</head>\n<body>\n'; sed '1,/^<\/style>$/d' "$SRC"; printf '\n</body>\n</html>\n'; } > index.html
 sed -i '' -E "s/const APP_VERSION = \"[^\"]*\";/const APP_VERSION = \"$V\";/" index.html
 printf '{"v":"%s"}\n' "$V" > version.json

@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="robots" content="noindex">
 <title>Tọa đàm VNEI Summit 2026</title>
@@ -32,12 +32,12 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{height:100%}
+html,body{height:100%;width:100%;max-width:100%;overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow:hidden;-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit}
 button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-.app{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.app{position:fixed;inset:0;width:100%;max-width:100vw;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 
 /* ---------- top bar ---------- */
 .top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg);flex-wrap:wrap}
@@ -792,9 +792,13 @@ document.addEventListener("pointerdown", wake);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
 
 applyFs(); applyNotes(wideDefault()); go(i);
+/* iPad Safari can keep the landscape zoom after rotating to portrait: snap back */
+function refit(){ window.scrollTo(0,0); document.documentElement.style.width = "100%"; requestAnimationFrame(()=>{ document.documentElement.style.width = ""; }); }
+window.addEventListener("orientationchange", () => setTimeout(refit, 250));
+window.addEventListener("resize", () => setTimeout(refit, 100));
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-104354";
+const APP_VERSION = "20261003-104907";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;
