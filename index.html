@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex">
+<title>Tọa đàm VNEI Summit 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: moderator cue deck for an iPad on stage. Top bar = clock + segment budget, two columns = what I say | what I keep in my pocket, bottom bar = big Prev/Next. Dark by choice (stage glare), same family as the Atlas Talk deck. */
+:root{
+  color-scheme: dark;
+  --bg:#0A0F1F;
+  --surface:#111B36;
+  --surface-2:#16224A;
+  --border:#2E3F68;
+  --ink:#E8ECF7;
+  --dim:#B8C1D9;
+  --faint:#8592B3;
+  --gold:#FFCC4E;
+  --gold-soft:rgba(255,204,78,.13);
+  --thoa:#8FB0F0;
+  --thoa-soft:rgba(143,176,240,.12);
+  --guest:#5FD3A6;
+  --warn:#FFB547;
+  --over:#FF6B72;
+  --font:'Be Vietnam Pro', 'Helvetica Neue', Arial, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --fs:1;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow:hidden;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.app{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg);flex-wrap:wrap}
+.seg{display:flex;flex-direction:column;min-width:0;flex:1}
+.seg-name{font-weight:700;font-size:15px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg-time{font:500 12px var(--mono);color:var(--faint);letter-spacing:.04em}
+.clockbox{display:flex;align-items:center;gap:10px}
+.now{font:600 20px var(--mono);font-variant-numeric:tabular-nums;color:var(--dim)}
+.budget{font:600 15px var(--mono);font-variant-numeric:tabular-nums;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);white-space:nowrap}
+.budget.ok{color:var(--guest);border-color:rgba(95,211,166,.4)}
+.budget.warn{color:var(--warn);border-color:rgba(255,181,71,.5)}
+.budget.over{color:var(--bg);background:var(--over);border-color:var(--over)}
+.budget.idle{color:var(--faint)}
+.tbtn{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:8px 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.tbtn.gold{background:var(--gold);color:#1B1206;border-color:var(--gold)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- main ---------- */
+.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);min-height:0}
+.script,.notes{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;min-width:0}
+.script{padding:clamp(18px,3vw,40px) clamp(16px,3.4vw,48px) 40px;touch-action:pan-y}
+.notes{padding:20px clamp(16px,2.4vw,30px) 40px;border-left:1px solid var(--border);background:var(--surface)}
+@media (max-width:900px), (orientation:portrait){
+  .main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr)}
+  .notes{border-left:0;border-top:1px solid var(--border)}
+}
+body.notes-off .main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+body.notes-off .notes{display:none}
+
+.kicker{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.stitle{font-size:calc(30px * var(--fs));line-height:1.2;font-weight:800;margin:0 0 22px;text-wrap:balance}
+.blocks{display:flex;flex-direction:column;gap:18px}
+.blk{border-radius:14px;padding:14px 18px 16px;border:1px solid var(--border)}
+.blk .who{font:600 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.blk .who::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.blk p{margin:0 0 .55em}
+.blk p:last-child{margin-bottom:0}
+.blk ul{margin:.2em 0 .5em;padding-left:1.2em}
+.blk li{margin:.25em 0}
+.blk.son{background:var(--gold-soft);border-color:rgba(255,204,78,.45)}
+.blk.son .who{color:var(--gold)}
+.blk.son .say{font-size:calc(22px * var(--fs));line-height:1.55;font-weight:500}
+.blk.son q,.blk.thoa q{quotes:none}
+.blk.thoa{background:var(--thoa-soft);border-color:rgba(143,176,240,.35)}
+.blk.thoa .who{color:var(--thoa)}
+.blk.thoa .say{font-size:calc(17px * var(--fs));line-height:1.55;color:var(--dim)}
+.blk.guest{background:transparent;border-style:dashed;border-color:rgba(95,211,166,.45);padding:10px 16px}
+.blk.guest .who{color:var(--guest);margin:0}
+.blk.guest .say{font-size:calc(15px * var(--fs));color:var(--dim);margin-top:6px}
+.ask{display:block;margin:.4em 0;padding-left:14px;border-left:3px solid currentColor;font-weight:600}
+.blk.son .ask{color:var(--ink);border-color:var(--gold)}
+.blk.thoa .ask{color:var(--ink);border-color:var(--thoa)}
+.fix{font:600 11px var(--mono);color:var(--guest);border:1px solid rgba(95,211,166,.45);border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+
+/* cover */
+.cover h1{font-size:calc(40px * var(--fs));line-height:1.12;margin:0 0 6px;font-weight:900;letter-spacing:-.01em;text-wrap:balance}
+.cover h1 em{font-style:normal;color:var(--gold)}
+.cover .sub{color:var(--dim);font-size:17px;margin:0 0 22px}
+.ros{width:100%;border-collapse:collapse;font-size:calc(16px * var(--fs))}
+.ros td{padding:9px 10px;border-top:1px solid var(--border);vertical-align:top}
+.ros td:first-child{font:600 14px var(--mono);font-variant-numeric:tabular-nums;color:var(--gold);white-space:nowrap;width:1%}
+.ros td:nth-child(2){font-weight:700;white-space:nowrap}
+.ros td:last-child{color:var(--dim)}
+.panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 22px}
+.pcard{border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface);min-width:0}
+.pcard b{display:block;font-size:15px}
+.pcard span{font-size:13px;color:var(--faint)}
+.pcard.mod{border-color:rgba(255,204,78,.4)}
+
+/* ---------- notes column ---------- */
+.nsec{margin:0 0 20px}
+.nsec h3{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 8px}
+.nsec ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:7px}
+.nsec li{font-size:calc(16px * var(--fs));line-height:1.5;color:var(--ink)}
+.nsec.follow li{color:var(--ink)}
+.nsec.follow li::marker{content:"↳  ";color:var(--gold)}
+.nsec.tips li{color:var(--dim)}
+.nsec.facts li{color:var(--dim);font-size:calc(15px * var(--fs))}
+.nsec.facts b{color:var(--ink)}
+.chk{font:600 11px var(--mono);border-radius:5px;padding:1px 5px;margin-left:4px;white-space:nowrap}
+.chk.ok{color:var(--guest);border:1px solid rgba(95,211,166,.4)}
+.chk.q{color:var(--warn);border:1px solid rgba(255,181,71,.45)}
+.jot textarea{width:100%;min-height:96px;resize:vertical;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:calc(16px * var(--fs))/1.45 var(--font)}
+.jot .hint{font-size:12px;color:var(--faint);margin-top:4px}
+.recap{display:flex;flex-direction:column;gap:8px}
+.recap div{font-size:15px;line-height:1.45;border-left:3px solid var(--guest);padding-left:10px;color:var(--dim)}
+.recap b{color:var(--ink)}
+
+/* ---------- bottom bar ---------- */
+.bottom{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 16px;border-top:1px solid var(--border);background:var(--bg)}
+.nav{border:0;border-radius:14px;padding:16px 26px;font-size:18px;font-weight:800;cursor:pointer;min-width:120px}
+.nav.prev{background:var(--surface-2);color:var(--dim)}
+.nav.next{background:var(--gold);color:#1B1206}
+.nav:disabled{opacity:.35;cursor:default}
+.mid{min-width:0;text-align:center}
+.dots{display:flex;gap:5px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.dot{width:20px;height:6px;border-radius:3px;background:var(--border);border:0;padding:0;cursor:pointer}
+.dot.done{background:#4A5C8A}
+.dot.cur{background:var(--gold)}
+.upnext{font-size:13px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upnext b{color:var(--dim);font-weight:600}
+
+/* ---------- sheets (TOC, reference) ---------- */
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(5,8,18,.78);display:flex;align-items:flex-end;justify-content:center;padding:env(safe-area-inset-top,0px) 0 0}
+.sheet-box{width:min(980px,100%);max-height:88%;background:var(--surface);border:1px solid var(--border);border-bottom:0;border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden}
+.sheet-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.sheet-head h2{margin:0;font-size:18px;flex:1}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 18px calc(28px + env(safe-area-inset-bottom,0px))}
+.toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.toc button{width:100%;text-align:left;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer}
+.toc button.cur{border-color:var(--gold);background:var(--gold-soft)}
+.toc .t{font:600 13px var(--mono);color:var(--gold);font-variant-numeric:tabular-nums}
+.toc .n{font-weight:600;font-size:15px;min-width:0}
+.toc .w{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.w.son{color:var(--gold)} .w.thoa{color:var(--thoa)} .w.both{color:var(--dim)}
+.fixlist{margin-top:16px;font-size:14px;color:var(--dim);border-top:1px solid var(--border);padding-top:12px}
+.fixlist ul{margin:6px 0 0;padding-left:1.2em}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--border)}
+.tab{border:1px solid var(--border);background:var(--bg);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--gold);color:#1B1206;border-color:var(--gold)}
+.ref h3{font-size:17px;margin:18px 0 8px}
+.ref h3:first-child{margin-top:0}
+.ref p,.ref li{font-size:15px;line-height:1.55;color:var(--dim)}
+.ref b{color:var(--ink)}
+.ref ul{padding-left:1.2em;margin:0 0 8px}
+.gcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.gcard{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--bg);min-width:0}
+.gcard h4{margin:0 0 2px;font-size:16px}
+.gcard .role{font-size:13px;color:var(--gold);margin-bottom:8px}
+.gcard ul{margin:0;padding-left:1.1em}
+.gcard li{font-size:14px}
+.qa{display:flex;flex-direction:column;gap:10px}
+.qa div{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.qa .q{font-weight:600;color:var(--ink);font-size:15px}
+.qa .a{font-size:14px;color:var(--dim);margin-top:4px}
+.qa .to{font:600 11px var(--mono);color:var(--guest);letter-spacing:.06em;text-transform:uppercase}
+.tbl-wrap{overflow-x:auto}
+.ref table{border-collapse:collapse;width:100%;font-size:14px}
+.ref th,.ref td{border-top:1px solid var(--border);padding:8px;text-align:left;vertical-align:top;color:var(--dim)}
+.ref th{color:var(--faint);font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+@media (max-width:600px){
+  .nav{min-width:0;padding:14px 16px;font-size:16px}
+  .stitle{font-size:calc(24px * var(--fs))}
+  .blk.son .say{font-size:calc(19px * var(--fs))}
+  .now{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .script.enter{animation:rise .32s ease}
+  @keyframes rise{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="seg"><div class="seg-name" id="segName">Chuẩn bị</div><div class="seg-time" id="segTime">15:30 - 16:20 · 50 phút</div></div>
+    <div class="clockbox">
+      <span class="now" id="now">--:--</span>
+      <button class="budget idle" id="budget" title="Chạm để bắt đầu tính giờ từ lúc này">Bắt đầu tính giờ</button>
+    </div>
+    <div class="tools">
+      <button class="tbtn" id="btnToc">Mục lục</button>
+      <button class="tbtn" id="btnRef">Tra nhanh</button>
+      <button class="tbtn" id="btnNotes">Ẩn ghi chú</button>
+      <button class="tbtn" id="btnSmaller" aria-label="Chữ nhỏ hơn">A−</button>
+      <button class="tbtn" id="btnBigger" aria-label="Chữ to hơn">A+</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="script" id="script"></section>
+    <aside class="notes" id="notes"></aside>
+  </main>
+
+  <footer class="bottom">
+    <button class="nav prev" id="prev">◀ Trước</button>
+    <div class="mid"><div class="dots" id="dots"></div><div class="upnext" id="upnext"></div></div>
+    <button class="nav next" id="next">Tiếp ▶</button>
+  </footer>
+</div>
+
+<div class="sheet" id="tocSheet" hidden>
+  <div class="sheet-box">
+    <div class="sheet-head"><h2>Mục lục · 50 phút</h2><button class="tbtn" data-close>Đóng</button></div>
+    <div class="sheet-body">
+      <ul class="toc" id="toc"></ul>
+      <div class="fixlist"><b>Bản này đã sửa so với kịch bản BTC gửi 2/10:</b>
+        <ul>
+          <li>Thời lượng ghi thống nhất 50 phút (bản gốc có chỗ ghi 55').</li>
+          <li>Ông Trương Ngọc Kiểm gọi là "ông" ở mọi chỗ (bỏ "thầy", "PGS.").</li>
+          <li>"Nghị quyết 86/2026" → "Nghị quyết 86/NQ-CP".</li>
+          <li>Vòng 4: "Cục ĐMST/NATEC" → "Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
+          <li>Vòng 3: thêm dấu ↔ vào "University ↔ Policy maker".</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="refSheet" hidden>
+  <div class="sheet-box">
+    <div class="sheet-head"><h2>Tra nhanh</h2><button class="tbtn" data-close>Đóng</button></div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" data-tab="guests" aria-selected="true">Khách mời</button>
+      <button class="tab" role="tab" data-tab="policy" aria-selected="false">Chính sách</button>
+      <button class="tab" role="tab" data-tab="bk" aria-selected="false">Đề án spin-off BK</button>
+      <button class="tab" role="tab" data-tab="qa" aria-selected="false">Q&amp;A hội trường</button>
+      <button class="tab" role="tab" data-tab="backup" aria-selected="false">Dự phòng</button>
+    </div>
+    <div class="sheet-body ref" id="refBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const START_H = 15, START_M = 30; // planned start, today
+
+/* who: son | thoa | guest */
+const S = [
+{ id:"cover", seg:"Chuẩn bị", t:[-10,0], title:"Trước giờ lên sân khấu", who:"both", cover:true,
+  notes:{
+    tips:[
+      "Xác nhận với BTC <b>chức danh chính xác của ông Từ Minh Hiệu</b>. Không tìm được trên trang của Bộ KH&CN, nên khi giới thiệu chỉ nói \"đại diện Cục Khởi nghiệp và Doanh nghiệp công nghệ\".",
+      "Thống nhất với chị Thoa: ai cầm đồng hồ, ký hiệu tay khi khách quá giờ (ví dụ chạm nhẹ đồng hồ).",
+      "Bật Không làm phiền, tắt khóa màn hình tự động. Trang này tự giữ màn hình sáng khi có thể.",
+      "Chạm ô <b>Bắt đầu tính giờ</b> đúng lúc mở tọa đàm, nếu bắt đầu muộn lịch sẽ dịch theo.",
+      "Chạm <b>Tra nhanh</b> bất cứ lúc nào để xem hồ sơ khách, số liệu chính sách, câu hỏi hội trường, phương án dự phòng."
+    ]
+  }},
+{ id:"open", seg:"Mở đề", t:[0,4], title:"Mở tọa đàm", who:"both",
+  blocks:[
+    {who:"son", html:`<p>Kính thưa quý vị đại biểu và toàn thể hội trường,</p>
+      <p>Thời gian qua, chúng ta đã nói rất nhiều về các chủ trương, hành lang chính sách đổi mới sáng tạo. Nhưng chủ đề của VNEI Summit hôm nay là: <b>"Từ chính sách đến thực thi"</b>. Vì vậy, trong 50 phút tới, chúng tôi xin phép không nhắc lại câu chuyện chính sách nằm trên giấy, mà đi thẳng vào 3 câu hỏi cốt lõi:</p>
+      <ul><li>Các trường đại học đã thực sự làm gì?</li><li>Kết quả thực chứng nào đã xuất hiện?</li><li>Còn rào cản cụ thể nào Nhà nước cần tháo gỡ để các mô hình này nhân rộng?</li></ul>`},
+    {who:"thoa", html:`<p>Đồng hành cùng quý vị trong phiên thảo luận hành động chiều hôm nay, chúng tôi xin trân trọng giới thiệu 4 vị khách mời đặc biệt:</p>
+      <ul><li>Ông Từ Minh Hiệu - Đại diện Cục Khởi nghiệp và Doanh nghiệp công nghệ, Bộ KH&CN</li><li>Ông Trương Ngọc Kiểm - Giám đốc Công viên ĐMST, Đại học Quốc gia Hà Nội</li><li>Ông Phạm Tuấn Hiệp - Giám đốc Đầu tư BK Holdings</li><li>Ông Trần Trí Dũng - Chuyên gia Chương trình Khởi nghiệp Thụy Sĩ (SwissEP)</li></ul>
+      <p>Và ngay bây giờ, xin kính mời quý vị cùng bước vào Vòng 1.</p>`}
+  ],
+  notes:{
+    tips:[
+      "Giữ phần mở trong 4 phút. Chị Thoa giới thiệu khách, anh không cần nhắc lại chức danh.",
+      "Ba câu hỏi cốt lõi chính là xương sống của Vòng 1, 2, 3. Lúc chuyển vòng có thể nhắc lại câu tương ứng để khán giả bám theo."
+    ]
+  }},
+{ id:"r1a", seg:"Vòng 1 · Đại học đã làm gì?", t:[4,8], title:"Hỏi ông Từ Minh Hiệu", who:"son", to:"Hiệu",
+  blocks:[
+    {who:"son", html:`<p>Để mở đầu, câu hỏi đầu tiên xin được dành cho ông Từ Minh Hiệu:</p>
+      <span class="ask">Thưa ông, nhìn từ góc độ cơ quan quản lý nhà nước, sau Nghị quyết 57 và các cơ chế chính sách mới ban hành gần đây, ông kỳ vọng vai trò của trường đại học trong Hệ thống Đổi mới sáng tạo Quốc gia sẽ thay đổi căn bản như thế nào?</span>`},
+    {who:"guest", html:"Ông Hiệu trả lời · khoảng 3 phút"}
+  ],
+  notes:{
+    follow:[
+      "Nghị quyết 86/NQ-CP đặt chỉ tiêu 100% cơ sở giáo dục đại học có nội dung ĐMST và khởi nghiệp trong chương trình đào tạo vào năm 2030. Cục sẽ đo chỉ tiêu này thế nào để nó không dừng ở phong trào?",
+      "Luật KH,CN&ĐMST 2025 cho tổ chức chủ trì tự động có quyền sở hữu kết quả nghiên cứu (khoản 2 Điều 25). Theo ông, trường đại học đã dùng quyền này đến đâu?",
+      "Vai trò đại học ông kỳ vọng là nơi \"tạo ra công nghệ\", hay còn là nơi \"tạo ra doanh nghiệp\"?"
+    ],
+    tips:[
+      "Nếu ông Hiệu nói dài về chính sách chung, kéo về câu hỏi: \"vai trò của trường thay đổi ở điểm nào cụ thể nhất?\"",
+      "Câu nối sang ông Kiểm là của chị Thoa (Đề án Công viên ĐMST)."
+    ],
+    facts:[
+      "<b>NQ 57-NQ/TW</b> (Bộ Chính trị, 22/12/2024): đột phá KH,CN, ĐMST và chuyển đổi số.",
+      "<b>Luật KH,CN&ĐMST</b> thông qua 27/6/2025."
+    ],
+    jot:true
+  }},
+{ id:"r1b", seg:"Vòng 1 · Đại học đã làm gì?", t:[8,12], title:"Chị Thoa hỏi ông Trương Ngọc Kiểm", who:"thoa", to:"Kiểm",
+  blocks:[
+    {who:"thoa", html:`<p>Xin cảm ơn ông Hiệu. Tiếp nối tham luận vừa rồi về Đề án Công viên ĐMST của ĐHQGHN, câu hỏi tiếp theo xin dành cho ông Trương Ngọc Kiểm:</p>
+      <span class="ask">Thưa ông<span class="fix">đã sửa</span>, ĐHQGHN đang triển khai xây dựng Công viên Đổi mới sáng tạo. Điều gì trong mô hình này giúp chúng ta vượt ra khỏi khái niệm "xây dựng hạ tầng phòng ốc vật lý", mà thực sự làm thay đổi bản chất cách đại học kết nối đề tài nghiên cứu với doanh nghiệp và thị trường?</span>`},
+    {who:"guest", html:"Ông Kiểm trả lời · khoảng 3 phút"}
+  ],
+  notes:{
+    follow:[
+      "Công viên ra mắt từ 1/3/2025. Sau hơn một năm rưỡi, đâu là dự án đầu tiên đi từ phòng thí nghiệm ra doanh nghiệp nhờ Công viên?",
+      "Một doanh nghiệp vào Công viên nhận được gì mà ở bên ngoài không có?",
+      "Cuộc thi \"RND to Startup\" 2026 của ĐHQGHN gắn với Công viên ra sao: là đầu vào cho ươm tạo, hay là sự kiện riêng?"
+    ],
+    tips:["Lượt này chị Thoa hỏi. Anh nghe để chuẩn bị câu nối sang ông Hiệp: \"Một mô hình rất đáng chờ đợi!\""],
+    facts:[
+      "<b>Công viên Công nghệ cao và ĐMST, ĐHQGHN</b>: thành lập theo QĐ 189/QĐ-ĐHQGHN ngày 13/1/2025, ra mắt 1/3/2025. Ông Kiểm là giám đốc đầu tiên.",
+      "Ông Kiểm nhấn mạnh phối hợp Nhà nước - Đại học - Doanh nghiệp là chìa khóa đưa nghiên cứu ra thị trường."
+    ],
+    jot:true
+  }},
+{ id:"r1c", seg:"Vòng 1 · Đại học đã làm gì?", t:[12,16], title:"Hỏi ông Phạm Tuấn Hiệp", who:"son", to:"Hiệp",
+  blocks:[
+    {who:"son", html:`<p>Một mô hình rất đáng chờ đợi! Còn tại ĐH Bách khoa Hà Nội, chúng ta vừa nghe tham luận về chương trình thí điểm spinoff. Xin được hỏi ông Phạm Tuấn Hiệp:</p>
+      <span class="ask">HUST đang thử nghiệm Standard Deals và chương trình ươm tạo spinoff. So với cách chuyển giao, thương mại hóa kết quả nghiên cứu trước đây của trường, điểm thay đổi mang tính bản lề của mô hình mới này là gì?</span>`},
+    {who:"guest", html:"Ông Hiệp trả lời · khoảng 3 phút"}
+  ],
+  notes:{
+    follow:[
+      "Đề án chọn license thay vì định giá tài sản trí tuệ ngay từ đầu. Nếu phải giải thích cho một nhà khoa học trong 30 giây, ông sẽ nói thế nào?",
+      "Standard Deal rút thời gian xử lý nội bộ từ tối đa 57 ngày làm việc xuống còn 15 ngày. Bước nào trước đây gây tắc nhiều nhất?",
+      "Giảng viên làm nhà sáng lập spin-off có được giữ vị trí giảng dạy không? Đề án có đề xuất chế độ kiêm nhiệm và tạm hoãn nghĩa vụ (career-break)."
+    ],
+    tips:["Nếu ông Hiệp đi sâu vào thuật ngữ (SAFE, option pool), xin ông một ví dụ cụ thể cho hội trường."],
+    facts:[
+      "<b>Mẫu Carnegie Mellon</b>: trường nhận 6% cổ phần (license độc quyền, đã có bằng), 5% (không độc quyền), 3% (chưa có bằng, kể cả phần mềm).",
+      "<b>Standard Deal BK</b>: ân hạn tiền bản quyền 36 tháng; mốc bắt buộc 6 tháng có kế hoạch kinh doanh, 12 tháng có đội quản lý, 18 tháng có nguyên mẫu, 24 tháng gọi vốn vòng 1, 36 tháng bán hàng đầu tiên.",
+      "Thí điểm tối đa <b>15 spin-off trong 24 tháng</b>. BK hiện là chủ sở hữu hơn 200 văn bằng SHTT.",
+      "Phân vai: Văn phòng TTO lo IP và license; <b>BK Holdings</b> đứng tên và quản lý phần vốn của trường."
+    ],
+    jot:true
+  }},
+{ id:"r2a", seg:"Vòng 2 · Show me the evidence", t:[16,22], title:"Ba con số chứng minh", who:"both", to:"Kiểm + Hiệp",
+  blocks:[
+    {who:"thoa", html:`<p>Cảm ơn ông Hiệp. Chúng ta đã nghe các trường chia sẻ về mô hình và công cụ. Nhưng bây giờ, tôi xin phép chuyển sang câu hỏi khó hơn: Kết quả đâu? Chúng tôi muốn chuyển tọa đàm từ thông điệp "Chúng tôi đã thành lập..." sang: "Chúng tôi đã tạo ra..."</p>`},
+    {who:"son", html:`<p>Chính xác! Một câu hỏi chuẩn hóa dành cho cả hai đại diện cơ sở nghiên cứu, ông Trương Ngọc Kiểm<span class="fix">đã sửa</span> và ông Phạm Tuấn Hiệp:</p>
+      <span class="ask">Nếu chỉ được đưa ra ba con số định lượng để chứng minh mô hình ĐMST của trường mình đang thực sự vận hành và được thị trường đón nhận, ví dụ: số POC với doanh nghiệp, số spinoff thành lập, số hợp đồng R&D hay doanh thu thương mại hóa, các ông sẽ chọn ba con số nào?</span>`},
+    {who:"guest", html:"Mỗi trường khoảng 2 phút · mời ông Kiểm trước, ông Hiệp sau"}
+  ],
+  notes:{
+    follow:[
+      "Trong ba con số đó, con số nào khó đạt nhất, và vì sao?",
+      "Đến VNEI Summit 2027, ông muốn con số nào tăng gấp đôi?",
+      "Con số đó có được công bố công khai hằng năm không?"
+    ],
+    tips:[
+      "Nếu khách đưa số <b>đầu vào</b> (số hội thảo, số đội dự thi, số phòng lab), kéo lại nhẹ nhàng: \"Đó là đầu vào. Còn đầu ra mà doanh nghiệp trả tiền thì sao?\"",
+      "Ghi nhanh 6 con số vào ô bên dưới, phần kết luận có thể nhắc lại."
+    ],
+    facts:["Bộ chỉ số theo dõi trong đề án BK gồm 4 nhóm: quy trình vận hành; thương mại hóa (văn bằng được khai thác, doanh thu spin-off, việc làm); thu hút vốn; bền vững (tỷ lệ spin-off còn hoạt động sau 3 và 5 năm)."],
+    jot:true
+  }},
+{ id:"r2b", seg:"Vòng 2 · Show me the evidence", t:[22,25], title:"Chị Thoa hỏi ông Hiệu", who:"thoa", to:"Hiệu",
+  blocks:[
+    {who:"thoa", html:`<p>Những con số rất biết nói! Xin quay trở lại với ông Từ Minh Hiệu:</p>
+      <span class="ask">Thưa ông, nếu các trường đại học toàn quốc đều báo cáo bằng những KPI thực chứng định lượng như trên, cơ quan quản lý nhìn thấy cơ hội cộng hưởng như thế nào với Chiến lược Quốc gia về khởi nghiệp sáng tạo theo Nghị quyết 86/NQ-CP<span class="fix">đã sửa</span> của Chính phủ?</span>`},
+    {who:"guest", html:"Ông Hiệu trả lời · khoảng 2,5 phút"}
+  ],
+  notes:{
+    follow:[
+      "Cục có tính đưa các KPI này vào thống kê quốc gia về khởi nghiệp, để các trường báo cáo cùng một chuẩn không?",
+      "Chương trình quốc gia về khởi nghiệp sáng tạo 2026-2035 (QĐ 3789/QĐ-BKHCN) có cửa nào dành riêng cho spin-off đại học không?"
+    ],
+    tips:["Lượt này chị Thoa hỏi. Anh chuẩn bị câu sang ông Dũng (từ Đề án 844 đến NQ 57)."],
+    facts:[
+      "<b>NQ 86/NQ-CP</b> ban hành 5/4/2026: Chiến lược quốc gia về khởi nghiệp sáng tạo, là chiến lược riêng đầu tiên cho lĩnh vực này.",
+      "Mục tiêu đến 2030: 5 triệu doanh nghiệp, ít nhất 10.000 doanh nghiệp khởi nghiệp sáng tạo, ít nhất 5 kỳ lân, thị trường vốn mạo hiểm 1,5 tỷ USD, 100% cơ sở GDĐH và GDNN có nội dung ĐMST và khởi nghiệp trong chương trình đào tạo."
+    ],
+    jot:true
+  }},
+{ id:"r2c", seg:"Vòng 2 · Show me the evidence", t:[25,28], title:"Hỏi ông Trần Trí Dũng", who:"son", to:"Dũng",
+  blocks:[
+    {who:"son", html:`<p>Xin hỏi tiếp ông Trần Trí Dũng:</p>
+      <span class="ask">Là người đồng hành và quan sát hệ sinh thái nhiều năm qua, anh Dũng thấy khu vực đại học đã thực sự chuyển dịch ra sao: từ thời kỳ Đề án 844 tập trung vào phong trào khởi nghiệp, đến nay là Chiến lược ĐMST Quốc gia theo Nghị quyết 57?</span>`},
+    {who:"guest", html:"Ông Dũng trả lời · khoảng 2,5 phút"}
+  ],
+  notes:{
+    follow:[
+      "Từ góc nhìn SwissEP, đại học Việt Nam đang thiếu mắt xích nào nhất: văn phòng chuyển giao (TTO), tiền cho giai đoạn hoàn thiện công nghệ (TRL 4-6), hay cố vấn có kinh nghiệm thị trường?",
+      "Có điều gì của giai đoạn Đề án 844 mà anh nghĩ nên giữ lại, không nên bỏ?"
+    ],
+    tips:["Kịch bản xưng \"ông\" ở câu dẫn, \"anh Dũng\" trong câu hỏi. Chọn một cách và giữ nhất quán."],
+    facts:[
+      "<b>Đề án 844</b>: QĐ 844/QĐ-TTg ngày 18/5/2016, hỗ trợ hệ sinh thái khởi nghiệp ĐMST quốc gia đến 2025.",
+      "<b>Đề án 1665</b>: QĐ 1665/QĐ-TTg ngày 30/10/2017, hỗ trợ HSSV khởi nghiệp đến 2025.",
+      "Ông Dũng: Quản lý chương trình SwissEP khu vực Hà Nội, hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong từ 2014."
+    ],
+    jot:true
+  }},
+{ id:"r3a", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[28,33], title:"Một cơ chế muốn thay đổi", who:"both", to:"Kiểm + Hiệp",
+  blocks:[
+    {who:"son", html:`<p>Thưa quý vị, nếu mô hình đã định hình, kết quả bước đầu đã có, vì sao vẫn chưa thể tự động nhân rộng? Câu trả lời nằm ở <b>"Điểm nghẽn thực thi"</b>.</p>`},
+    {who:"thoa", html:`<p>Xin được đặt câu hỏi thẳng thắn tới 2 trường (ĐHQGHN và HUST):</p>
+      <span class="ask">Nếu ngay lúc này được phép thay đổi đúng MỘT cơ chế hoặc quy định, dù là về định giá tài sản trí tuệ (IP), quyền sở hữu công nghệ của nhà khoa học, thành lập spinoff hay thủ tục sử dụng tài sản công, đâu là nút thắt lớn nhất đang ghìm chân hoạt động thương mại hóa của trường?</span>`},
+    {who:"guest", html:"Hai trường chia sẻ trực diện · khoảng 2 phút mỗi người"}
+  ],
+  notes:{
+    follow:[
+      "Cơ chế đó nằm ở văn bản cấp nào: Luật, Nghị định, hay quy chế của chính trường?",
+      "Nếu định giá IP thấp hơn giá trị thực, ai chịu trách nhiệm? Có cần \"vùng an toàn\" (safe harbour) cho người ký không?"
+    ],
+    tips:["Ghi lại hai nút thắt khách nêu. Câu tiếp theo anh đưa thẳng hai nút thắt này cho ông Hiệu."],
+    facts:[
+      "Cục SHTT nhận định khó khăn định giá IP chủ yếu do thị trường chưa phát triển và năng lực triển khai, không phải do thiếu quy định (trích trong đề án BK).",
+      "Safe Harbour trong đề án BK có 7 điều kiện: đúng quy trình, có hội đồng độc lập, công khai, không tư lợi, theo Standard Deal, kê khai xung đột lợi ích, có ý kiến pháp lý."
+    ],
+    jot:true
+  }},
+{ id:"r3b", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[33,37], title:"Hỏi ông Hiệu: trường tự gỡ được gì?", who:"son", to:"Hiệu",
+  blocks:[
+    {who:"son", html:`<p>Một cuộc đối thoại trực tiếp: University ↔ Policy maker<span class="fix">đã sửa</span>. Xin chuyển ngay câu hỏi này tới ông Từ Minh Hiệu:</p>
+      <span class="ask">Anh Hiệu vừa nghe những rào cản rất cụ thể từ cơ sở. Ở góc độ cơ quan tham mưu chính sách, theo anh, đâu là điểm nghẽn mà thực chất các trường hoàn toàn có thể chủ động tự giải quyết bằng quy chế nội bộ, thay vì ngồi chờ sửa luật hay nghị định?</span>`},
+    {who:"guest", html:"Ông Hiệu trả lời · khoảng 3 phút"}
+  ],
+  notes:{
+    follow:[
+      "Bộ có thể ban hành một bộ quy chế mẫu về spin-off và IP để các trường áp dụng ngay không, thay vì mỗi trường tự soạn?",
+      "Với những điểm thật sự cần sửa ở cấp trên, Cục đang ưu tiên điểm nào trước?"
+    ],
+    tips:["Nhắc lại ngắn gọn hai nút thắt hai trường vừa nêu (xem ô ghi nhanh của slide trước) trước khi hỏi."],
+    facts:[
+      "Luật KH,CN&ĐMST 2025, khoản 2 Điều 27: tổ chức được tự quyết hình thức, giá và phân chia lợi nhuận khi thương mại hóa kết quả nghiên cứu.",
+      "Đề án BK viện dẫn NĐ 265/2025/NĐ-CP (tài chính, đầu tư trong KH,CN&ĐMST) và NĐ 268/2025/NĐ-CP (ĐMST, khởi nghiệp sáng tạo)."
+    ],
+    jot:true
+  }},
+{ id:"r3c", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[37,40], title:"Chị Thoa hỏi ông Dũng", who:"thoa", to:"Dũng",
+  blocks:[
+    {who:"thoa", html:`<span class="ask">Còn quan điểm của anh Trần Trí Dũng thế nào? Từ kinh nghiệm quốc tế, đâu là những nút thắt các trường có thể tự mở khóa bằng năng lực quản trị nội bộ mà không cần phụ thuộc vào cơ chế vĩ mô?</span>`},
+    {who:"guest", html:"Ông Dũng trả lời · khoảng 2 phút"}
+  ],
+  notes:{
+    follow:["Nếu một trường chỉ làm được một việc trong 90 ngày tới, anh khuyên làm việc gì?"],
+    tips:[
+      "Nếu đang chậm hơn 2 phút, đây là câu nên rút ngắn nhất (xem Tra nhanh · Dự phòng).",
+      "Câu chuyển sang Vòng 4 là của anh: \"Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ Problem sang Action.\""
+    ],
+    facts:["Ví dụ quốc tế trong đề án BK: Mỹ (Bayh-Dole, 7.000-8.000 hợp đồng license mỗi năm, hơn 1.000 spin-off đại học mỗi năm), Nhật (TLO đưa doanh nghiệp vào từ giai đoạn R&D)."],
+    jot:true
+  }},
+{ id:"r4", seg:"Vòng 4 · Từ pilot đến scale", t:[40,46], title:"Cam kết hành động 60 giây", who:"both", to:"Cả 4 khách",
+  blocks:[
+    {who:"son", html:`<p>Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ "Problem" sang "Action". Ở vòng này, chúng tôi áp dụng luật: <b>mỗi diễn giả có đúng 60 giây cam kết hành động!</b></p>`},
+    {who:"thoa", html:`<p>Câu hỏi chung cho cả 4 vị khách mời:</p>
+      <span class="ask">Trong vòng 6 đến 12 tháng tới, MỘT việc quan trọng nhất mà tổ chức của quý vị ưu tiên triển khai để đưa ĐMST đại học từ giai đoạn thử nghiệm (pilot) sang nhân rộng (scale) là gì?</span>`},
+    {who:"son", html:`<p><b>Thứ tự mời:</b></p><ul>
+      <li><b>Anh mời</b> ông Trương Ngọc Kiểm (ĐHQGHN) · 60 giây</li>
+      <li>Chị Thoa mời ông Phạm Tuấn Hiệp (BK Holdings/HUST) · 60 giây</li>
+      <li><b>Anh mời</b> ông Từ Minh Hiệu (Cục Khởi nghiệp và Doanh nghiệp công nghệ<span class="fix">đã sửa</span>) · 60 giây</li>
+      <li>Chị Thoa mời ông Trần Trí Dũng (SwissEP) · 60 giây</li></ul>`}
+  ],
+  notes:{
+    tips:[
+      "Câu chặn lịch sự khi quá giờ: \"Xin cảm ơn ông, chúng ta giữ đúng 60 giây để kịp nghe cam kết của các khách mời còn lại.\"",
+      "Ghi mỗi cam kết thành một dòng. Phần kết luận nhắc lại được thì hội trường nhớ lâu hơn."
+    ],
+    jot:true
+  }},
+{ id:"quick", seg:"Chốt nhanh", t:[46,47], title:"Câu hỏi 30 giây cho cả panel", who:"son",
+  blocks:[
+    {who:"son", html:`<span class="ask">Một câu hỏi siêu ngắn 30 giây cho cả panel: Đến VNEI Summit 2027, cộng đồng cần nhìn thấy tín hiệu, chỉ số cụ thể nào để khẳng định năm 2026 này thực sự là năm chuyển đổi mô hình ĐMST đại học?</span>`},
+    {who:"guest", html:"Panel điểm danh nhanh 1-2 từ khóa"}
+  ],
+  notes:{
+    tips:["Đi theo hàng ghế, mỗi người 1-2 từ khóa. Không để ai nói thành câu dài."],
+    jot:true
+  }},
+{ id:"close", seg:"Kết luận", t:[47,50], title:"Thông điệp đúc kết", who:"both",
+  blocks:[
+    {who:"thoa", html:`<p>Kính thưa quý vị đại biểu, 50 phút thảo luận thẳng thắn, trách nhiệm vừa rồi đã phác họa rất rõ nét sự chuyển dịch tại các trường đại học Việt Nam qua 3 thông điệp đúc kết:</p>
+      <ul><li><b>Từ "hoạt động ĐMST phong trào" sang "năng lực ĐMST nội tại"</b>: ĐMST trong đại học không còn đo bằng số lượng hội thảo hay giải thưởng startup, mà phải được lượng hóa bằng POC, IP licensing, doanh nghiệp spinoff, vốn đầu tư thu hút và doanh thu thương mại hóa.</li>
+      <li><b>Từ "Technology Push" sang "Market Pull kết hợp Technology Push"</b>: nhu cầu doanh nghiệp và thị trường phải đồng hành ngay từ ngày đầu tại phòng lab, giải quyết bài toán thị trường thay vì làm xong nghiên cứu mới loay hoay tìm đầu ra.</li></ul>`},
+    {who:"son", html:`<p><b>3. Từ "Pilot" sang "Thể chế hóa nội bộ" và "Scale"</b>: những mô hình tiên phong như tại ĐHQGHN, HUST và mạng lưới VNEI cần nhanh chóng được chuẩn hóa, hoàn thiện và nhân rộng trên toàn quốc.</p>
+      <p>Thay mặt ban tổ chức và các điều phối viên, xin trân trọng cảm ơn 4 vị diễn giả và toàn thể quý vị đại biểu. Hẹn gặp lại tất cả chúng ta tại VNEI Summit 2027 để cùng nhau kiểm chứng và lượng hóa kết quả dịch chuyển này!</p>
+      <p>Xin trân trọng cảm ơn!</p>`}
+  ],
+  notes:{
+    tips:[
+      "Nếu còn thời gian, chèn một câu nhắc lại cam kết hay con số đắt nhất của khách trước thông điệp 3 (xem ghi nhanh bên dưới).",
+      "Sau khi cảm ơn: mời khách mời ở lại chụp ảnh chung nếu BTC có sắp xếp."
+    ],
+    recap:true
+  }}
+];
+
+const REF = {
+guests:`
+<div class="gcards">
+  <div class="gcard"><h4>Ông Từ Minh Hiệu</h4><div class="role">Cục Khởi nghiệp và Doanh nghiệp công nghệ, Bộ KH&CN</div>
+    <ul><li>Chưa tìm được chức danh trên trang của Bộ. Cần hỏi BTC.</li><li>Lãnh đạo Cục: Cục trưởng Hoàng Ngọc Nhân; Phó Cục trưởng Phạm Đức Nghiệm, Trần Xuân Đích.</li><li>Tên tiếng Anh trên trang Bộ: Department of Startup and Technology Enterprise. "NATEC" là cách gọi từ thời Cục Phát triển thị trường và Doanh nghiệp KH&CN.</li><li>Lượt hỏi: V1 (anh), V2 (Thoa), V3 (anh), V4 (anh mời).</li></ul></div>
+  <div class="gcard"><h4>Ông Trương Ngọc Kiểm</h4><div class="role">Giám đốc Công viên Công nghệ cao và ĐMST, ĐHQGHN</div>
+    <ul><li>Học hàm PGS.TS, nhưng trên sân khấu gọi là "ông".</li><li>Giám đốc đầu tiên của Công viên (QĐ 189/QĐ-ĐHQGHN, 13/1/2025; ra mắt 1/3/2025). Phụ trách cả mảng chuyển giao công nghệ và hỗ trợ khởi nghiệp.</li><li>Lượt hỏi: V1 (Thoa), V2 (anh), V3 (Thoa), V4 (anh mời, người đầu tiên).</li></ul></div>
+  <div class="gcard"><h4>Ông Phạm Tuấn Hiệp</h4><div class="role">Giám đốc Đầu tư, BK Holdings (ĐH Bách khoa Hà Nội)</div>
+    <ul><li>Đồng thời là Giám đốc Ươm tạo của BK Holdings và Giám đốc quản lý quỹ BK Fund.</li><li>BK Holdings là hệ thống quản lý đầu tư và chuyển giao công nghệ của HUST; trong đề án sandbox, đây là bên đứng tên phần vốn của trường tại spin-off.</li><li>Lượt hỏi: V1 (anh), V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
+  <div class="gcard"><h4>Ông Trần Trí Dũng</h4><div class="role">Quản lý chương trình khu vực Hà Nội, SwissEP</div>
+    <ul><li>Từ 2014 hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong (Myanmar, Campuchia, Lào, Thái Lan, Việt Nam).</li><li>Từ 2004 làm tư vấn quản trị chiến lược cho doanh nghiệp tư nhân.</li><li>Hồ sơ công khai ghi là Phó Chủ tịch thường trực VSMA (mạng lưới cố vấn khởi nghiệp, VCCI).</li><li>Lượt hỏi: V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
+  <div class="gcard"><h4>ThS. Hoàng Thị Thoa</h4><div class="role">Trường ĐH Công thương TP.HCM · đồng điều phối (MC 2)</div>
+    <ul><li>Đọc phần giới thiệu khách, câu dẫn Vòng 2, câu hỏi chính Vòng 3, câu hỏi chung Vòng 4, thông điệp 1-2.</li></ul></div>
+</div>`,
+policy:`
+<div class="tbl-wrap"><table>
+<tr><th>Văn bản</th><th>Nội dung chính</th><th>Độ chắc</th></tr>
+<tr><td><b>NQ 57-NQ/TW</b><br>22/12/2024</td><td>Bộ Chính trị: đột phá phát triển KH,CN, ĐMST và chuyển đổi số quốc gia. Đề án BK trích mục tiêu tỷ lệ thương mại hóa sáng chế 8-10%.</td><td><span class="chk ok">đã tra</span></td></tr>
+<tr><td><b>NQ 86/NQ-CP</b><br>5/4/2026</td><td>Chiến lược quốc gia về khởi nghiệp sáng tạo, chiến lược riêng đầu tiên. Đến 2030: 5 triệu doanh nghiệp; ≥10.000 DN khởi nghiệp sáng tạo; ≥5 kỳ lân; vốn mạo hiểm 1,5 tỷ USD; 100% cơ sở GDĐH, GDNN có nội dung ĐMST và khởi nghiệp. Bộ KH&CN làm đầu mối.</td><td><span class="chk ok">đã tra</span></td></tr>
+<tr><td><b>QĐ 3789/QĐ-BKHCN</b><br>2026</td><td>Chương trình quốc gia về khởi nghiệp sáng tạo giai đoạn 2026-2035 (bản chính thức của dự thảo đang lưu ở Ban Nghiên cứu VNEI).</td><td><span class="chk q">chưa rõ ngày</span></td></tr>
+<tr><td><b>Luật KH,CN&ĐMST</b><br>27/6/2025</td><td>Khoản 2 Điều 25: tổ chức chủ trì tự động có quyền sở hữu kết quả nghiên cứu, không phải bồi hoàn. Khoản 4 Điều 25: theo dõi riêng, không hạch toán vào vốn nhà nước. Khoản 2 Điều 27: tự quyết giá và phân chia lợi nhuận khi thương mại hóa.</td><td><span class="chk ok">theo đề án BK</span></td></tr>
+<tr><td><b>NĐ 265/2025, NĐ 268/2025</b></td><td>Tài chính và đầu tư trong KH,CN&ĐMST; ĐMST, hệ sinh thái và hạ tầng khởi nghiệp sáng tạo.</td><td><span class="chk ok">theo đề án BK</span></td></tr>
+<tr><td><b>NĐ 125/2026/NĐ-CP</b></td><td>Hoạt động KH&CN trong cơ sở giáo dục đại học.</td><td><span class="chk ok">theo đề án BK</span></td></tr>
+<tr><td><b>NQ 24-NQ/TW</b> (22/8/2026), <b>NQ 37/2026/QH16</b> (24/8/2026)</td><td>Khuyến khích, bảo vệ cán bộ dám nghĩ dám làm; miễn trừ, giảm nhẹ trách nhiệm với rủi ro khách quan trong thử nghiệm. Đề án BK dùng làm điểm tựa cho Safe Harbour.</td><td><span class="chk q">mới thấy trong đề án BK</span></td></tr>
+<tr><td><b>Đề án 844</b></td><td>QĐ 844/QĐ-TTg 18/5/2016: hỗ trợ hệ sinh thái khởi nghiệp ĐMST quốc gia đến 2025.</td><td><span class="chk ok">đã biết</span></td></tr>
+<tr><td><b>Đề án 1665</b></td><td>QĐ 1665/QĐ-TTg 30/10/2017: hỗ trợ học sinh, sinh viên khởi nghiệp đến 2025.</td><td><span class="chk ok">đã biết</span></td></tr>
+</table></div>
+<p>Trích nguyên văn số hiệu trên sân khấu thì chỉ dùng các dòng "đã tra" hoặc "đã biết".</p>`,
+bk:`
+<h3>Đề án sandbox spin-off ĐH Bách khoa Hà Nội (báo cáo hội nghị 9/2026, bản v6 đang lưu)</h3>
+<ul>
+<li><b>Lựa chọn cốt lõi</b>: cấp phép (licensing), không định giá IP thành con số tuyệt đối ngay từ đầu. "Cấp phép khai thác trước, xác lập giá trị theo kết quả."</li>
+<li><b>Vì sao không định giá sớm</b>: chi phí nghiên cứu không được vốn hóa (Chuẩn mực kế toán 04); thiếu dữ liệu cho cả 3 cách định giá; trường định theo chi phí, doanh nghiệp định theo dòng tiền; rủi ro trách nhiệm theo Điều 36 Luật Doanh nghiệp.</li>
+<li><b>Khoảng trống TRL 4-6</b>: ngân sách đề tài dừng ở TRL 1-3, nhà đầu tư chờ tín hiệu thị trường.</li>
+<li><b>Standard Deal</b>: trường giữ IP, cấp phép có điều kiện, nhận cổ phần thiểu số. Ngoại lệ (Negotiated Deal) bắt buộc thẩm định giá độc lập khi giá trị góp vốn từ 5 tỷ đồng.</li>
+<li><b>Mốc bắt buộc</b>: 6 tháng kế hoạch kinh doanh · 12 tháng đội quản lý · 18 tháng nguyên mẫu · 24 tháng gọi vốn vòng 1 · 36 tháng bán hàng đầu tiên. Không đạt thì chuyển sang không độc quyền hoặc thu hồi.</li>
+<li><b>Chia lợi ích</b>: 50/50 giữa nhóm tác giả và trường khi tác giả không làm nhà sáng lập. Trường nhận cổ phần phổ thông, không chống pha loãng, không quyền phủ quyết, chỉ cử người vào HĐQT khi sở hữu từ 10%.</li>
+<li><b>Thời gian xử lý</b>: tối đa 57 ngày làm việc, còn 15 ngày nếu áp dụng đúng Standard Deal.</li>
+<li><b>Phạm vi thí điểm</b>: tối đa 15 spin-off trong 24 tháng, sơ kết sau 12 tháng.</li>
+<li><b>6 nội dung sandbox</b>: Standard Deal; kiêm nhiệm và career-break cho nhà khoa học; dùng có kiểm soát tài sản công; thẩm định độc lập Safe Harbour; chấp nhận rủi ro thương mại; thoái vốn linh hoạt.</li>
+<li><b>Tham chiếu quốc tế</b>: Carnegie Mellon (6% / 5% / 3% cổ phần), Stanford; Mỹ (Bayh-Dole), Nhật (TLO).</li>
+</ul>
+<p>Đây là tài liệu tham khảo trong kho của anh. Khi hỏi ông Hiệp, nên để ông tự nêu số liệu.</p>`,
+qa:`
+<h3>Kịch bản không có phần hỏi đáp với hội trường</h3>
+<p>Nếu có người giơ tay: "Xin ghi nhận câu hỏi, các diễn giả sẽ ở lại trao đổi sau phiên." Chỉ nhận <b>tối đa 1 câu</b> khi Vòng 4 kết thúc sớm hơn 16:15, yêu cầu hỏi trong 20 giây, chỉ định 1 khách trả lời trong 60 giây.</p>
+<h3>Câu hỏi có thể gặp và người nên trả lời</h3>
+<div class="qa">
+  <div><div class="to">→ Ông Hiệp</div><div class="q">Giảng viên làm nhà sáng lập spin-off có vướng Luật Viên chức không?</div><div class="a">Đề án BK đề xuất thí điểm chế độ kiêm nhiệm và tạm hoãn một phần nghĩa vụ công tác.</div></div>
+  <div><div class="to">→ Ông Hiệp</div><div class="q">Sinh viên chưa có IP thì có cửa nào vào spin-off không?</div><div class="a">Hỏi về chương trình ươm tạo và BK Fund.</div></div>
+  <div><div class="to">→ Ông Dũng</div><div class="q">Trường nhỏ, trường địa phương không có quỹ như BK Fund thì bắt đầu từ đâu?</div><div class="a">Gợi ý: quy chế IP nội bộ, mạng lưới cố vấn, kết nối với chương trình quốc tế.</div></div>
+  <div><div class="to">→ Ông Kiểm</div><div class="q">Doanh nghiệp muốn đặt hàng nghiên cứu thì vào cửa nào của ĐHQGHN?</div><div class="a">Hỏi về đầu mối tiếp nhận ở Công viên.</div></div>
+  <div><div class="to">→ Ông Hiệu</div><div class="q">Có nguồn vốn nhà nước nào cho giai đoạn POC, TRL 4-6 không?</div><div class="a">Liên hệ Chương trình quốc gia khởi nghiệp 2026-2035 và các nghị định tài chính KH,CN&ĐMST.</div></div>
+  <div><div class="to">→ Điều phối trả lời</div><div class="q">VNEI sẽ làm gì tiếp sau Summit?</div><div class="a">Anh trả lời ngắn từ góc độ Ban Nghiên cứu VNEI; hẹn kiểm chứng số liệu ở Summit 2027 như lời kết.</div></div>
+</div>
+<h3>Câu hỏi dự phòng khi còn thừa giờ</h3>
+<ul>
+<li>Cho cả panel: "Một mô hình ở trường khác mà quý vị muốn học ngay ngày mai là gì?"</li>
+<li>Ông Kiểm và ông Hiệp: "ĐHQGHN và HUST có thể dùng chung gì với nhau: Standard Deal, quỹ, hay mạng lưới nhà đầu tư?"</li>
+<li>Ông Hiệu: "Cục cần các trường báo cáo những gì để làm chính sách tốt hơn?"</li>
+<li>Ông Dũng: "Sai lầm phổ biến nhất của văn phòng chuyển giao công nghệ mới thành lập là gì?"</li>
+</ul>`,
+backup:`
+<h3>Đang chậm giờ thì cắt theo thứ tự này</h3>
+<ul>
+<li><b>Chậm 1-2 phút</b>: bỏ câu hỏi phụ, chuyển câu nhanh hơn.</li>
+<li><b>Chậm 3 phút</b>: rút câu hỏi của chị Thoa cho ông Dũng ở Vòng 3 xuống 1 phút, hoặc gộp vào lượt cam kết ở Vòng 4.</li>
+<li><b>Chậm 4 phút trở lên</b>: bỏ phần "Chốt nhanh 30 giây", vào thẳng kết luận.</li>
+<li>Không cắt Vòng 4 và kết luận. Đó là phần hội trường nhớ.</li>
+</ul>
+<h3>Khách nói quá giờ</h3>
+<ul>
+<li>"Xin cảm ơn ông, một ý rất hay. Để giữ nhịp, cho phép tôi chuyển sang..."</li>
+<li>Ở Vòng 4: "Chúng ta giữ đúng 60 giây để kịp nghe các khách mời còn lại."</li>
+</ul>
+<h3>Khách lạc đề hoặc né câu hỏi số liệu</h3>
+<ul>
+<li>"Để khán giả nắm rõ, nếu chỉ chọn một con số, đó sẽ là con số nào?"</li>
+<li>"Đó là đầu vào. Còn kết quả mà doanh nghiệp trả tiền thì sao?"</li>
+</ul>
+<h3>Một khách vắng mặt</h3>
+<ul>
+<li><b>Vắng ông Hiệu</b>: câu V1 chuyển cho ông Dũng ("nhìn từ hệ sinh thái"); câu V2 về NQ 86 và câu V3 về quy chế nội bộ gộp làm một, hỏi ông Dũng.</li>
+<li><b>Vắng ông Dũng</b>: câu V2 chuyển cho ông Hiệu; bỏ câu V3 của chị Thoa.</li>
+<li><b>Vắng một trong hai trường</b>: câu "ba con số" và "một cơ chế" hỏi riêng trường còn lại, cho 3 phút.</li>
+</ul>
+<h3>Sự cố kỹ thuật</h3>
+<ul><li>Mic hỏng: dùng mic của người điều phối kia, nói "Xin phép mượn mic một chút".</li><li>Trang này không cần mạng sau khi đã mở xong.</li></ul>`
+};
+
+/* ---------- state ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("vneiTD."+k); return v===null? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("vneiTD."+k, JSON.stringify(v)); }catch(e){} }
+};
+let i = Math.min(Math.max(store.get("slide",0),0), S.length-1);
+let fs = store.get("fs",1);
+let offsetMs = store.get("offset", null); // shift of the plan when started late/early; null = not started
+if (offsetMs !== null && store.get("offsetDay","") !== new Date().toDateString()) offsetMs = null;
+
+const $ = id => document.getElementById(id);
+const scriptEl = $("script"), notesEl = $("notes");
+const WHO = {son:"Anh Sơn đọc", thoa:"ThS. Thoa đọc", guest:"Khách mời"};
+const WHO_SHORT = {son:"Sơn", thoa:"Thoa", both:"Cả hai"};
+
+function hm(min){ const d = new Date(); d.setHours(START_H, START_M + min, 0, 0); return pad(d.getHours())+":"+pad(d.getMinutes()); }
+function pad(n){ return String(n).padStart(2,"0"); }
+function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function coverHTML(){
+  const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","7'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới?"],["16:17","3'","Kết luận","Thông điệp đúc kết"]];
+  return `<div class="cover"><p class="kicker">VNEI Summit 2026 · 3/10/2026 · Tầng 6, tòa nhà NIC</p>
+  <h1>Từ chính sách <em>đến thực thi</em></h1>
+  <p class="sub">Tọa đàm 15:30 - 16:20 · 50 phút · số 1 Nguyễn Hữu An, Cầu Giấy, Hà Nội</p>
+  <div class="panel">
+    <div class="pcard mod"><b>TS. Bùi Tiến Sơn</b><span>MC 1 · ĐH Công nghiệp Hà Nội</span></div>
+    <div class="pcard mod"><b>ThS. Hoàng Thị Thoa</b><span>MC 2 · ĐH Công thương TP.HCM</span></div>
+    <div class="pcard"><b>Ông Từ Minh Hiệu</b><span>Cục Khởi nghiệp và Doanh nghiệp công nghệ</span></div>
+    <div class="pcard"><b>Ông Trương Ngọc Kiểm</b><span>GĐ Công viên ĐMST, ĐHQGHN</span></div>
+    <div class="pcard"><b>Ông Phạm Tuấn Hiệp</b><span>GĐ Đầu tư, BK Holdings</span></div>
+    <div class="pcard"><b>Ông Trần Trí Dũng</b><span>SwissEP</span></div>
+  </div>
+  <table class="ros">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[2]} <span style="color:var(--faint);font-weight:500">${r[1]}</span></td><td>${r[3]}</td></tr>`).join("")}</table></div>`;
+}
+
+function renderScript(s){
+  if (s.cover) return coverHTML();
+  const blocks = s.blocks.map(b => `<div class="blk ${b.who}"><div class="who">${WHO[b.who]}</div><div class="say">${b.html}</div></div>`).join("");
+  return `<p class="kicker">${esc(s.seg)} · ${hm(s.t[0])} - ${hm(s.t[1])}</p><h2 class="stitle">${esc(s.title)}</h2><div class="blocks">${blocks}</div>`;
+}
+
+function list(cls, title, arr){ return arr && arr.length ? `<div class="nsec ${cls}"><h3>${title}</h3><ul>${arr.map(x=>`<li>${x}</li>`).join("")}</ul></div>` : ""; }
+
+function renderNotes(s){
+  const n = s.notes || {};
+  let h = list("follow","Câu hỏi phụ", n.follow) + list("tips","Mẹo điều phối", n.tips) + list("facts","Số liệu cầm tay", n.facts);
+  if (n.jot){
+    h += `<div class="nsec jot"><h3>Ghi nhanh${s.to? " · "+esc(s.to):""}</h3><textarea id="jot-${s.id}" placeholder="Con số, cam kết, ý đắt...">${esc(store.get("jot."+s.id,""))}</textarea><div class="hint">Lưu trên máy này, hiện lại ở slide Kết luận.</div></div>`;
+  }
+  if (n.recap){
+    const items = S.filter(x=>x.notes&&x.notes.jot).map(x=>({s:x, v:store.get("jot."+x.id,"").trim()})).filter(x=>x.v);
+    h += `<div class="nsec"><h3>Đã ghi trong tọa đàm</h3>${items.length? `<div class="recap">${items.map(x=>`<div><b>${esc(x.s.to||x.s.title)}</b> · ${esc(x.v).replace(/\n/g,"<br>")}</div>`).join("")}</div>` : `<p style="color:var(--faint);font-size:14px;margin:0">Chưa có ghi chú nào. Các ô "Ghi nhanh" ở từng slide sẽ tập hợp về đây.</p>`}</div>`;
+  }
+  return h || `<p style="color:var(--faint)">Không có ghi chú.</p>`;
+}
+
+function go(n){
+  i = Math.min(Math.max(n,0), S.length-1);
+  store.set("slide", i);
+  const s = S[i];
+  scriptEl.innerHTML = renderScript(s);
+  notesEl.innerHTML = renderNotes(s);
+  scriptEl.scrollTop = 0; notesEl.scrollTop = 0;
+  scriptEl.classList.remove("enter"); void scriptEl.offsetWidth; scriptEl.classList.add("enter");
+  const ta = s.notes && s.notes.jot ? $("jot-"+s.id) : null;
+  if (ta) ta.addEventListener("input", () => store.set("jot."+s.id, ta.value));
+  $("segName").textContent = s.seg;
+  $("segTime").textContent = s.cover ? "15:30 - 16:20 · 50 phút" : `${hm(s.t[0])} - ${hm(s.t[1])} · ${s.t[1]-s.t[0]} phút · ${WHO_SHORT[s.who]}`;
+  $("prev").disabled = i===0; $("next").disabled = i===S.length-1;
+  const nx = S[i+1];
+  $("upnext").innerHTML = nx ? `Tiếp: <b>${esc(nx.title)}</b> · ${WHO_SHORT[nx.who]}` : "Hết kịch bản";
+  [...$("dots").children].forEach((d,k)=>{ d.className = "dot" + (k===i?" cur": k<i?" done":""); });
+  tick();
+}
+
+/* ---------- clock ---------- */
+function planStart(){ const d = new Date(); d.setHours(START_H, START_M, 0, 0); return d.getTime(); }
+function fmt(ms){ const s = Math.round(Math.abs(ms)/1000); return Math.floor(s/60)+":"+pad(s%60); }
+function tick(){
+  const now = Date.now(), d = new Date(now);
+  $("now").textContent = pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());
+  const b = $("budget"), s = S[i];
+  if (offsetMs === null){ b.className = "budget idle"; b.textContent = "Bắt đầu tính giờ"; return; }
+  const start = planStart() + offsetMs;
+  if (s.cover){
+    const el = now - start;
+    b.className = "budget idle"; b.textContent = el < 0 ? "Còn "+fmt(el)+" tới giờ" : "Đã chạy "+fmt(el); return;
+  }
+  const end = start + s.t[1]*60000, left = end - now;
+  if (left >= 60000){ b.className = "budget ok"; b.textContent = "Còn "+fmt(left); }
+  else if (left >= 0){ b.className = "budget warn"; b.textContent = "Còn "+fmt(left); }
+  else { b.className = "budget over"; b.textContent = "Quá "+fmt(left); }
+}
+setInterval(tick, 1000);
+
+$("budget").addEventListener("click", () => {
+  if (offsetMs === null){
+    // anchor the plan to "now" at the beginning of the current slide
+    const startOfSlide = S[i].cover ? 0 : S[i].t[0];
+    offsetMs = Date.now() - (planStart() + startOfSlide*60000);
+    store.set("offset", offsetMs); store.set("offsetDay", new Date().toDateString());
+  } else {
+    const sure = $("budget").dataset.arm === "1";
+    if (sure){ offsetMs = null; store.set("offset", null); $("budget").dataset.arm = ""; }
+    else { $("budget").dataset.arm = "1"; $("budget").textContent = "Chạm lần nữa để đặt lại"; setTimeout(()=>{ $("budget").dataset.arm=""; tick(); }, 2500); return; }
+  }
+  tick();
+});
+
+/* ---------- nav ---------- */
+S.forEach((s,k) => { const d = document.createElement("button"); d.className="dot"; d.setAttribute("aria-label", s.title); d.onclick = () => go(k); $("dots").appendChild(d); });
+$("prev").onclick = () => go(i-1);
+$("next").onclick = () => go(i+1);
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA") return;
+  if (["ArrowRight","PageDown"," "].includes(e.key)){ e.preventDefault(); go(i+1); }
+  if (["ArrowLeft","PageUp"].includes(e.key)){ e.preventDefault(); go(i-1); }
+  if (e.key === "Escape") closeSheets();
+});
+let sx=null, sy=null;
+scriptEl.addEventListener("touchstart", e => { const t=e.touches[0]; sx=t.clientX; sy=t.clientY; }, {passive:true});
+scriptEl.addEventListener("touchend", e => {
+  if (sx===null) return; const t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; sx=null;
+  if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.6) go(i + (dx<0?1:-1));
+}, {passive:true});
+
+/* ---------- sheets ---------- */
+function closeSheets(){ $("tocSheet").hidden = true; $("refSheet").hidden = true; }
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = closeSheets);
+document.querySelectorAll(".sheet").forEach(sh => sh.addEventListener("click", e => { if (e.target === sh) closeSheets(); }));
+$("btnToc").onclick = () => {
+  $("toc").innerHTML = S.map((s,k)=>`<li><button data-k="${k}" class="${k===i?"cur":""}"><span class="t">${s.cover? "trước":hm(s.t[0])}</span><span class="n">${esc(s.seg)} · ${esc(s.title)}</span><span class="w ${s.who}">${WHO_SHORT[s.who]}</span></button></li>`).join("");
+  $("toc").querySelectorAll("button").forEach(b => b.onclick = () => { closeSheets(); go(+b.dataset.k); });
+  $("tocSheet").hidden = false;
+};
+function showTab(t){
+  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.tab===t ? "true":"false"));
+  $("refBody").innerHTML = REF[t]; $("refBody").scrollTop = 0; store.set("tab", t);
+}
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => showTab(b.dataset.tab));
+$("btnRef").onclick = () => { showTab(store.get("tab","guests")); $("refSheet").hidden = false; };
+
+/* ---------- view options ---------- */
+function applyFs(){ document.documentElement.style.setProperty("--fs", fs); store.set("fs", fs); }
+$("btnSmaller").onclick = () => { fs = Math.max(.8, +(fs-.1).toFixed(2)); applyFs(); };
+$("btnBigger").onclick = () => { fs = Math.min(1.5, +(fs+.1).toFixed(2)); applyFs(); };
+function applyNotes(off){ document.body.classList.toggle("notes-off", off); $("btnNotes").textContent = off ? "Hiện ghi chú" : "Ẩn ghi chú"; store.set("notesOff", off); }
+$("btnNotes").onclick = () => applyNotes(!document.body.classList.contains("notes-off"));
+
+/* keep the screen awake on stage, where allowed */
+let lock = null;
+async function wake(){ try{ if ("wakeLock" in navigator && !lock){ lock = await navigator.wakeLock.request("screen"); lock.addEventListener("release", () => lock = null); } }catch(e){} }
+document.addEventListener("pointerdown", wake);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
+
+applyFs(); applyNotes(store.get("notesOff", false)); go(i);
+})();
+</script>
+
+</body>
+</html>
