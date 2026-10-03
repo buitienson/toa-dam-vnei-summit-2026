@@ -277,6 +277,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
           <li>Ông Trương Ngọc Kiểm gọi là "ông" ở mọi chỗ (bỏ "thầy", "PGS.").</li>
           <li>"Nghị quyết 86/2026" → "Nghị quyết 86/NQ-CP".</li>
           <li>Vòng 4: "Cục ĐMST/NATEC" → "Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
+          <li>Giới thiệu ông Từ Minh Hiệu: "Đại diện Cục..." → "Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
           <li>Vòng 3: thêm dấu ↔ vào "University ↔ Policy maker".</li>
           <li><b>Thêm</b> bảng phân vai MC 1/MC 2 ở slide đầu, khung "Dẫn tiếp" cuối mỗi slide.</li>
           <li><b>Thêm</b> lượt mời ông Đỗ Tiến Thịnh, Phó GĐ NIC (16:14) rồi TS. Nguyễn Trung Dũng, Chủ tịch VNEI (16:16), mỗi lượt 2 phút. Vòng 4 còn 4 phút, chốt nhanh thành tùy chọn, kết luận còn 2 phút.</li>
@@ -311,7 +312,7 @@ const S = [
 { id:"cover", seg:"Chuẩn bị", t:[-10,0], title:"Trước giờ lên sân khấu", who:"both", cover:true,
   notes:{
     tips:[
-      "Xác nhận với BTC <b>chức danh chính xác của ông Từ Minh Hiệu</b> (không có trên trang lãnh đạo Cục).",
+      "Chức danh ông Từ Minh Hiệu: <b>Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ</b>, Bộ KH&CN (anh xác nhận 3/10).",
       "Báo trước với <b>ông Đỗ Tiến Thịnh</b> (Phó GĐ NIC) và <b>TS. Nguyễn Trung Dũng</b> (Chủ tịch VNEI): sau Vòng 4 sẽ mời lần lượt mỗi ông khoảng 2 phút. Nhờ BTC chuẩn bị mic cầm tay ở chỗ hai ông ngồi.",
       "Báo chị Thoa: thêm 2 lượt (NIC, Chủ tịch VNEI) sau Vòng 4. Vòng 4 rút còn 4 phút, câu chốt nhanh 30 giây chỉ dùng khi dư giờ, kết luận còn 2 phút.",
       "Thống nhất với chị Thoa: ai cầm đồng hồ, ký hiệu tay khi khách quá giờ.",
@@ -326,7 +327,7 @@ const S = [
       <p>Thời gian qua, chúng ta đã nói rất nhiều về các chủ trương, hành lang chính sách đổi mới sáng tạo. Nhưng chủ đề của VNEI Summit hôm nay là: “Từ chính sách đến thực thi”. Vì vậy, trong 50 phút tới, chúng tôi xin phép không nhắc lại câu chuyện chính sách nằm trên giấy, mà đi thẳng vào 3 câu hỏi cốt lõi:</p>
       <ul><li>Các trường đại học đã thực sự làm gì?</li><li>Kết quả thực chứng nào đã xuất hiện?</li><li>Còn rào cản cụ thể nào Nhà nước cần tháo gỡ để các mô hình này nhân rộng?</li></ul>`},
     {who:"thoa", html:`<p>Đồng hành cùng quý vị trong phiên thảo luận hành động chiều hôm nay, chúng tôi xin trân trọng giới thiệu 4 vị khách mời đặc biệt:</p>
-      <ul><li>Ông Từ Minh Hiệu – Đại diện Cục Khởi nghiệp và Doanh nghiệp Công nghệ (NATEC), Bộ KH&amp;CN</li><li>Ông Trương Ngọc Kiểm – Giám đốc Công viên ĐMST, Đại học Quốc gia Hà Nội</li><li>Ông Phạm Tuấn Hiệp – Giám đốc Đầu tư BK Holdings</li><li>Ông Trần Trí Dũng – Chuyên gia từ Chương trình Khởi nghiệp Thụy Sĩ (SwissEP)</li></ul>
+      <ul><li>Ông Từ Minh Hiệu – Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ (NATEC), Bộ KH&amp;CN<span class="fix">đã sửa</span></li><li>Ông Trương Ngọc Kiểm – Giám đốc Công viên ĐMST, Đại học Quốc gia Hà Nội</li><li>Ông Phạm Tuấn Hiệp – Giám đốc Đầu tư BK Holdings</li><li>Ông Trần Trí Dũng – Chuyên gia từ Chương trình Khởi nghiệp Thụy Sĩ (SwissEP)</li></ul>
       <p>Và ngay bây giờ, xin kính mời quý vị cùng bước vào Vòng 1.</p>`}
   ],
   notes:{
@@ -523,8 +524,8 @@ const S = [
 const REF = {
 guests:`
 <div class="gcards">
-  <div class="gcard"><h4>Ông Từ Minh Hiệu</h4><div class="role">Cục Khởi nghiệp và Doanh nghiệp công nghệ, Bộ KH&CN</div>
-    <ul><li>Chưa tìm được chức danh trên trang của Bộ. Cần hỏi BTC.</li><li>Lãnh đạo Cục: Cục trưởng Hoàng Ngọc Nhân; Phó Cục trưởng Phạm Đức Nghiệm, Trần Xuân Đích.</li><li>Tên tiếng Anh trên trang Bộ: Department of Startup and Technology Enterprise. "NATEC" là cách gọi từ thời Cục Phát triển thị trường và Doanh nghiệp KH&CN.</li><li>Lượt hỏi: V1 (anh), V2 (Thoa), V3 (anh), V4 (anh mời).</li></ul></div>
+  <div class="gcard"><h4>Ông Từ Minh Hiệu</h4><div class="role">Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ, Bộ KH&CN</div>
+    <ul><li>Chức danh do anh Sơn xác nhận ngày 3/10.</li><li>Lãnh đạo Cục: Cục trưởng Hoàng Ngọc Nhân; Phó Cục trưởng Phạm Đức Nghiệm, Trần Xuân Đích.</li><li>Tên tiếng Anh trên trang Bộ: Department of Startup and Technology Enterprise. "NATEC" là cách gọi từ thời Cục Phát triển thị trường và Doanh nghiệp KH&CN.</li><li>Lượt hỏi: V1 (anh), V2 (Thoa), V3 (anh), V4 (anh mời).</li></ul></div>
   <div class="gcard"><h4>Ông Trương Ngọc Kiểm</h4><div class="role">Giám đốc Công viên Công nghệ cao và ĐMST, ĐHQGHN</div>
     <ul><li>Học hàm PGS.TS, nhưng trên sân khấu gọi là "ông".</li><li>Giám đốc đầu tiên của Công viên (QĐ 189/QĐ-ĐHQGHN, 13/1/2025; ra mắt 1/3/2025). Phụ trách cả mảng chuyển giao công nghệ và hỗ trợ khởi nghiệp.</li><li>Lượt hỏi: V1 (Thoa), V2 (anh), V3 (Thoa), V4 (anh mời, người đầu tiên).</li></ul></div>
   <div class="gcard"><h4>Ông Phạm Tuấn Hiệp</h4><div class="role">Giám đốc Đầu tư, BK Holdings (ĐH Bách khoa Hà Nội)</div>
@@ -654,7 +655,7 @@ function coverHTML(){
   <div class="panel">
     <div class="pcard mod"><b>TS. Bùi Tiến Sơn</b><span>MC 1 · ĐH Công nghiệp Hà Nội</span></div>
     <div class="pcard mod"><b>ThS. Hoàng Thị Thoa</b><span>MC 2 · Giám đốc Trung tâm, ĐH Công thương TP.HCM</span></div>
-    <div class="pcard"><b>Ông Từ Minh Hiệu</b><span>Cục Khởi nghiệp và Doanh nghiệp công nghệ</span></div>
+    <div class="pcard"><b>Ông Từ Minh Hiệu</b><span>Q. Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ</span></div>
     <div class="pcard"><b>Ông Trương Ngọc Kiểm</b><span>GĐ Công viên ĐMST, ĐHQGHN</span></div>
     <div class="pcard"><b>Ông Phạm Tuấn Hiệp</b><span>GĐ Đầu tư, BK Holdings</span></div>
     <div class="pcard"><b>Ông Trần Trí Dũng</b><span>SwissEP</span></div>
@@ -825,7 +826,7 @@ window.addEventListener("orientationchange", () => setTimeout(refit, 250));
 window.addEventListener("resize", () => setTimeout(refit, 100));
 
 /* update pill: compare with version.json next to the page (GitHub Pages only) */
-const APP_VERSION = "20261003-105646";
+const APP_VERSION = "20261003-112508";
 { const m = APP_VERSION.match(/^(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/); $("ver").textContent = m ? "Phiên bản "+m[3]+"/"+m[2]+" "+m[4]+":"+m[5] : "Phiên bản thử"; $("vchip").textContent = m ? "bản "+m[4]+":"+m[5] : "bản thử"; }
 (() => {
   if (location.protocol !== "https:" || APP_VERSION === "dev") return;

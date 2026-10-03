@@ -20,6 +20,7 @@ let body = `<h1>Tọa đàm "Từ chính sách - đến thực thi" · VNEI Summ
 <li>Thêm hai lượt mời sau Vòng 4 (em mời): <b>16:14 ông Đỗ Tiến Thịnh</b>, Phó Giám đốc NIC; <b>16:16 TS. Nguyễn Trung Dũng</b>, Chủ tịch VNEI.</li>
 <li>Vòng 4 còn 4 phút; kết luận còn 2 phút; câu chốt nhanh 30 giây của MC 1 thành tùy chọn.</li>
 <li>Gọi ông Trương Ngọc Kiểm là "ông" ở mọi chỗ (câu của chị ở Vòng 1: "Thưa ông, ĐHQGHN...").</li>
+<li>Phần chị giới thiệu khách: ông Từ Minh Hiệu là <b>Quyền Trưởng phòng Khởi nghiệp sáng tạo, Cục Khởi nghiệp và Doanh nghiệp công nghệ</b>, Bộ KH&amp;CN (thay cho "Đại diện Cục...").</li>
 <li>"Nghị quyết 86/2026" ghi đúng là "Nghị quyết 86/NQ-CP"; Vòng 4 ghi "Cục Khởi nghiệp và Doanh nghiệp công nghệ"; thời lượng thống nhất 50 phút.</li>
 <li>Hôm nay có hai ông Dũng: ông Trần Trí Dũng (SwissEP) và TS. Nguyễn Trung Dũng (Chủ tịch VNEI). Luôn gọi đủ họ tên.</li>
 </ul>
