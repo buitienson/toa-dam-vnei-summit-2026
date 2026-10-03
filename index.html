@@ -55,17 +55,26 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outlin
 .tools{display:flex;gap:8px;flex-wrap:wrap}
 
 /* ---------- main ---------- */
-.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);min-height:0}
+.main{display:grid;grid-template-columns:minmax(0,1fr);min-height:0;position:relative}
 .script,.notes{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;min-width:0}
-.script{padding:clamp(18px,3vw,40px) clamp(16px,3.4vw,48px) 40px;touch-action:pan-y}
-.notes{padding:20px clamp(16px,2.4vw,30px) 40px;border-left:1px solid var(--border);background:var(--surface)}
-@media (max-width:900px), (orientation:portrait){
-  .main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr)}
-  .notes{border-left:0;border-top:1px solid var(--border)}
+.script{padding:clamp(16px,3vw,40px) clamp(16px,3.4vw,48px) 48px;touch-action:pan-y}
+.notes{padding:18px clamp(16px,2.4vw,30px) 40px;background:var(--surface);display:none}
+.notes-head{display:none}
+/* wide landscape iPad: notes as a side column */
+@media (min-width:1000px) and (orientation:landscape){
+  body.notes-open .main{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+  body.notes-open .notes{display:block;border-left:1px solid var(--border)}
 }
-body.notes-off .main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
-body.notes-off .notes{display:none}
+/* iPad mini, portrait, phones: the script gets the whole screen, notes slide up as a drawer */
+@media not all and (min-width:1000px) and (orientation:landscape){
+  body.notes-open .notes{display:block;position:absolute;left:0;right:0;bottom:0;height:62%;z-index:5;border-top:2px solid var(--gold);border-radius:16px 16px 0 0;box-shadow:0 -18px 40px rgba(0,0,0,.55)}
+  .notes-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;position:sticky;top:-18px;background:var(--surface);padding:6px 0}
+  .notes-head b{font-size:15px;color:var(--gold)}
+}
 
+.banner{border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:0 0 18px;background:var(--surface)}
+.banner .bt{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.banner .bq{font-size:calc(18px * var(--fs));font-weight:800;margin-top:4px}
 .kicker{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
 .stitle{font-size:calc(30px * var(--fs));line-height:1.2;font-weight:800;margin:0 0 22px;text-wrap:balance}
 .blocks{display:flex;flex-direction:column;gap:18px}
@@ -78,11 +87,11 @@ body.notes-off .notes{display:none}
 .blk li{margin:.25em 0}
 .blk.son{background:var(--gold-soft);border-color:rgba(255,204,78,.45)}
 .blk.son .who{color:var(--gold)}
-.blk.son .say{font-size:calc(22px * var(--fs));line-height:1.55;font-weight:500}
+.blk.son .say{font-size:calc(21px * var(--fs));line-height:1.55;font-weight:500}
 .blk.son q,.blk.thoa q{quotes:none}
 .blk.thoa{background:var(--thoa-soft);border-color:rgba(143,176,240,.35)}
 .blk.thoa .who{color:var(--thoa)}
-.blk.thoa .say{font-size:calc(17px * var(--fs));line-height:1.55;color:var(--dim)}
+.blk.thoa .say{font-size:calc(19px * var(--fs));line-height:1.55;color:var(--ink)}
 .blk.guest{background:transparent;border-style:dashed;border-color:rgba(95,211,166,.45);padding:10px 16px}
 .blk.guest .who{color:var(--guest);margin:0}
 .blk.guest .say{font-size:calc(15px * var(--fs));color:var(--dim);margin-top:6px}
@@ -178,6 +187,15 @@ body.notes-off .notes{display:none}
 .ref th,.ref td{border-top:1px solid var(--border);padding:8px;text-align:left;vertical-align:top;color:var(--dim)}
 .ref th{color:var(--faint);font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 
+@media (max-width:999px){
+  .top{gap:8px 10px;padding:8px 14px}
+  .seg{flex:1 1 220px}
+  .tools{flex:1 1 100%;justify-content:space-between}
+  .tbtn{padding:8px 10px;font-size:14px}
+  .now{font-size:16px}
+  .nav{min-width:96px;padding:14px 18px}
+  .dot{width:14px}
+}
 @media (max-width:600px){
   .nav{min-width:0;padding:14px 16px;font-size:16px}
   .stitle{font-size:calc(24px * var(--fs))}
@@ -202,7 +220,7 @@ body.notes-off .notes{display:none}
     <div class="tools">
       <button class="tbtn" id="btnToc">Mục lục</button>
       <button class="tbtn" id="btnRef">Tra nhanh</button>
-      <button class="tbtn" id="btnNotes">Ẩn ghi chú</button>
+      <button class="tbtn" id="btnNotes">Ghi chú</button>
       <button class="tbtn" id="btnSmaller" aria-label="Chữ nhỏ hơn">A−</button>
       <button class="tbtn" id="btnBigger" aria-label="Chữ to hơn">A+</button>
     </div>
@@ -232,6 +250,7 @@ body.notes-off .notes{display:none}
           <li>"Nghị quyết 86/2026" → "Nghị quyết 86/NQ-CP".</li>
           <li>Vòng 4: "Cục ĐMST/NATEC" → "Cục Khởi nghiệp và Doanh nghiệp công nghệ".</li>
           <li>Vòng 3: thêm dấu ↔ vào "University ↔ Policy maker".</li>
+          <li><b>Thêm</b> lượt mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI (16:16, 2 phút). Vòng 4 còn 5 phút, kết luận còn 2 phút.</li>
         </ul>
       </div>
     </div>
@@ -262,33 +281,33 @@ const S = [
 { id:"cover", seg:"Chuẩn bị", t:[-10,0], title:"Trước giờ lên sân khấu", who:"both", cover:true,
   notes:{
     tips:[
-      "Xác nhận với BTC <b>chức danh chính xác của ông Từ Minh Hiệu</b>. Không tìm được trên trang của Bộ KH&CN, nên khi giới thiệu chỉ nói \"đại diện Cục Khởi nghiệp và Doanh nghiệp công nghệ\".",
-      "Thống nhất với chị Thoa: ai cầm đồng hồ, ký hiệu tay khi khách quá giờ (ví dụ chạm nhẹ đồng hồ).",
-      "Bật Không làm phiền, tắt khóa màn hình tự động. Trang này tự giữ màn hình sáng khi có thể.",
-      "Chạm ô <b>Bắt đầu tính giờ</b> đúng lúc mở tọa đàm, nếu bắt đầu muộn lịch sẽ dịch theo.",
-      "Chạm <b>Tra nhanh</b> bất cứ lúc nào để xem hồ sơ khách, số liệu chính sách, câu hỏi hội trường, phương án dự phòng."
+      "Xác nhận với BTC <b>chức danh chính xác của ông Từ Minh Hiệu</b> (không có trên trang lãnh đạo Cục).",
+      "Báo trước với <b>TS. Nguyễn Trung Dũng</b> (Chủ tịch VNEI) là sẽ mời ông phát biểu khoảng 2 phút trước phần kết luận, và nhờ BTC chuẩn bị mic cầm tay ở chỗ ông ngồi.",
+      "Báo chị Thoa: lượt hỏi ông Nguyễn Trung Dũng là phần thêm, nên Vòng 4 rút còn 5 phút và kết luận còn 2 phút.",
+      "Thống nhất với chị Thoa: ai cầm đồng hồ, ký hiệu tay khi khách quá giờ.",
+      "Hôm nay có <b>hai ông Dũng</b>: Trần Trí Dũng (SwissEP, khách mời) và Nguyễn Trung Dũng (Chủ tịch VNEI). Luôn gọi đủ họ tên.",
+      "Chạm ô <b>Bắt đầu tính giờ</b> đúng lúc mở tọa đàm. Bắt đầu muộn thì lịch tự dịch theo."
     ]
   }},
-{ id:"open", seg:"Mở đề", t:[0,4], title:"Mở tọa đàm", who:"both",
+{ id:"open", seg:"Mở tọa đàm", t:[0,4], title:"Mở tọa đàm · 4 phút", who:"both",
+  banner:["Mở tọa đàm – 4 phút","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],
   blocks:[
     {who:"son", html:`<p>Kính thưa quý vị đại biểu và toàn thể hội trường,</p>
-      <p>Thời gian qua, chúng ta đã nói rất nhiều về các chủ trương, hành lang chính sách đổi mới sáng tạo. Nhưng chủ đề của VNEI Summit hôm nay là: <b>"Từ chính sách đến thực thi"</b>. Vì vậy, trong 50 phút tới, chúng tôi xin phép không nhắc lại câu chuyện chính sách nằm trên giấy, mà đi thẳng vào 3 câu hỏi cốt lõi:</p>
+      <p>Thời gian qua, chúng ta đã nói rất nhiều về các chủ trương, hành lang chính sách đổi mới sáng tạo. Nhưng chủ đề của VNEI Summit hôm nay là: “Từ chính sách đến thực thi”. Vì vậy, trong 50 phút tới, chúng tôi xin phép không nhắc lại câu chuyện chính sách nằm trên giấy, mà đi thẳng vào 3 câu hỏi cốt lõi:</p>
       <ul><li>Các trường đại học đã thực sự làm gì?</li><li>Kết quả thực chứng nào đã xuất hiện?</li><li>Còn rào cản cụ thể nào Nhà nước cần tháo gỡ để các mô hình này nhân rộng?</li></ul>`},
     {who:"thoa", html:`<p>Đồng hành cùng quý vị trong phiên thảo luận hành động chiều hôm nay, chúng tôi xin trân trọng giới thiệu 4 vị khách mời đặc biệt:</p>
-      <ul><li>Ông Từ Minh Hiệu - Đại diện Cục Khởi nghiệp và Doanh nghiệp công nghệ, Bộ KH&CN</li><li>Ông Trương Ngọc Kiểm - Giám đốc Công viên ĐMST, Đại học Quốc gia Hà Nội</li><li>Ông Phạm Tuấn Hiệp - Giám đốc Đầu tư BK Holdings</li><li>Ông Trần Trí Dũng - Chuyên gia Chương trình Khởi nghiệp Thụy Sĩ (SwissEP)</li></ul>
+      <ul><li>Ông Từ Minh Hiệu – Đại diện Cục Khởi nghiệp và Doanh nghiệp Công nghệ (NATEC), Bộ KH&amp;CN</li><li>Ông Trương Ngọc Kiểm – Giám đốc Công viên ĐMST, Đại học Quốc gia Hà Nội</li><li>Ông Phạm Tuấn Hiệp – Giám đốc Đầu tư BK Holdings</li><li>Ông Trần Trí Dũng – Chuyên gia từ Chương trình Khởi nghiệp Thụy Sĩ (SwissEP)</li></ul>
       <p>Và ngay bây giờ, xin kính mời quý vị cùng bước vào Vòng 1.</p>`}
   ],
   notes:{
-    tips:[
-      "Giữ phần mở trong 4 phút. Chị Thoa giới thiệu khách, anh không cần nhắc lại chức danh.",
-      "Ba câu hỏi cốt lõi chính là xương sống của Vòng 1, 2, 3. Lúc chuyển vòng có thể nhắc lại câu tương ứng để khán giả bám theo."
-    ]
+    tips:["Ba câu hỏi cốt lõi là xương sống của Vòng 1, 2, 3. Lúc chuyển vòng có thể nhắc lại câu tương ứng để khán giả bám theo."]
   }},
-{ id:"r1a", seg:"Vòng 1 · Đại học đã làm gì?", t:[4,8], title:"Hỏi ông Từ Minh Hiệu", who:"son", to:"Hiệu",
+{ id:"r1a", seg:"Vòng 1 · Chính sách đã xuống trường đại học như thế nào?", t:[4,8], title:"Hỏi ông Từ Minh Hiệu", who:"son", to:"Hiệu",
+  banner:["Vòng 1 – 12 phút","“Chính sách đã xuống trường đại học như thế nào?”"],
   blocks:[
     {who:"son", html:`<p>Để mở đầu, câu hỏi đầu tiên xin được dành cho ông Từ Minh Hiệu:</p>
-      <span class="ask">Thưa ông, nhìn từ góc độ cơ quan quản lý nhà nước, sau Nghị quyết 57 và các cơ chế chính sách mới ban hành gần đây, ông kỳ vọng vai trò của trường đại học trong Hệ thống Đổi mới sáng tạo Quốc gia sẽ thay đổi căn bản như thế nào?</span>`},
-    {who:"guest", html:"Ông Hiệu trả lời · khoảng 3 phút"}
+      <span class="ask">“Thưa ông, nhìn từ góc độ cơ quan quản lý nhà nước, sau Nghị quyết 57 và các cơ chế chính sách mới ban hành gần đây, ông kỳ vọng vai trò của trường đại học trong Hệ thống Đổi mới sáng tạo Quốc gia sẽ thay đổi căn bản như thế nào?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
     follow:[
@@ -296,205 +315,170 @@ const S = [
       "Luật KH,CN&ĐMST 2025 cho tổ chức chủ trì tự động có quyền sở hữu kết quả nghiên cứu (khoản 2 Điều 25). Theo ông, trường đại học đã dùng quyền này đến đâu?",
       "Vai trò đại học ông kỳ vọng là nơi \"tạo ra công nghệ\", hay còn là nơi \"tạo ra doanh nghiệp\"?"
     ],
-    tips:[
-      "Nếu ông Hiệu nói dài về chính sách chung, kéo về câu hỏi: \"vai trò của trường thay đổi ở điểm nào cụ thể nhất?\"",
-      "Câu nối sang ông Kiểm là của chị Thoa (Đề án Công viên ĐMST)."
-    ],
-    facts:[
-      "<b>NQ 57-NQ/TW</b> (Bộ Chính trị, 22/12/2024): đột phá KH,CN, ĐMST và chuyển đổi số.",
-      "<b>Luật KH,CN&ĐMST</b> thông qua 27/6/2025."
-    ],
+    tips:["Nếu ông Hiệu nói dài về chính sách chung, kéo về câu hỏi: \"vai trò của trường thay đổi ở điểm nào cụ thể nhất?\""],
+    facts:["<b>NQ 57-NQ/TW</b> (Bộ Chính trị, 22/12/2024): đột phá KH,CN, ĐMST và chuyển đổi số.","<b>Luật KH,CN&ĐMST</b> thông qua 27/6/2025."],
     jot:true
   }},
-{ id:"r1b", seg:"Vòng 1 · Đại học đã làm gì?", t:[8,12], title:"Chị Thoa hỏi ông Trương Ngọc Kiểm", who:"thoa", to:"Kiểm",
+{ id:"r1b", seg:"Vòng 1 · Chính sách đã xuống trường đại học như thế nào?", t:[8,12], title:"Chị Thoa hỏi ông Trương Ngọc Kiểm", who:"thoa", to:"Kiểm",
   blocks:[
-    {who:"thoa", html:`<p>Xin cảm ơn ông Hiệu. Tiếp nối tham luận vừa rồi về Đề án Công viên ĐMST của ĐHQGHN, câu hỏi tiếp theo xin dành cho ông Trương Ngọc Kiểm:</p>
-      <span class="ask">Thưa ông<span class="fix">đã sửa</span>, ĐHQGHN đang triển khai xây dựng Công viên Đổi mới sáng tạo. Điều gì trong mô hình này giúp chúng ta vượt ra khỏi khái niệm "xây dựng hạ tầng phòng ốc vật lý", mà thực sự làm thay đổi bản chất cách đại học kết nối đề tài nghiên cứu với doanh nghiệp và thị trường?</span>`},
-    {who:"guest", html:"Ông Kiểm trả lời · khoảng 3 phút"}
+    {who:"thoa", html:`<p>Xin cảm ơn ông Hiệu. Tiếp nối tham luận vừa rồi về Đề án Công viên ĐMST của ĐHQGHN, câu hỏi tiếp theo xin dành cho Ông Trương Ngọc Kiểm:</p>
+      <span class="ask">“Thưa ông<span class="fix">đã sửa</span>, ĐHQGHN đang triển khai xây dựng Công viên Đổi mới sáng tạo. Điều gì trong mô hình này giúp chúng ta vượt ra khỏi khái niệm “xây dựng hạ tầng phòng ốc vật lý”, mà thực sự làm thay đổi bản chất cách đại học kết nối đề tài nghiên cứu với doanh nghiệp và thị trường?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
     follow:[
       "Công viên ra mắt từ 1/3/2025. Sau hơn một năm rưỡi, đâu là dự án đầu tiên đi từ phòng thí nghiệm ra doanh nghiệp nhờ Công viên?",
       "Một doanh nghiệp vào Công viên nhận được gì mà ở bên ngoài không có?",
-      "Cuộc thi \"RND to Startup\" 2026 của ĐHQGHN gắn với Công viên ra sao: là đầu vào cho ươm tạo, hay là sự kiện riêng?"
+      "Cuộc thi \"RND to Startup\" 2026 của ĐHQGHN gắn với Công viên ra sao?"
     ],
-    tips:["Lượt này chị Thoa hỏi. Anh nghe để chuẩn bị câu nối sang ông Hiệp: \"Một mô hình rất đáng chờ đợi!\""],
-    facts:[
-      "<b>Công viên Công nghệ cao và ĐMST, ĐHQGHN</b>: thành lập theo QĐ 189/QĐ-ĐHQGHN ngày 13/1/2025, ra mắt 1/3/2025. Ông Kiểm là giám đốc đầu tiên.",
-      "Ông Kiểm nhấn mạnh phối hợp Nhà nước - Đại học - Doanh nghiệp là chìa khóa đưa nghiên cứu ra thị trường."
-    ],
+    tips:["Lượt này chị Thoa hỏi. Câu tiếp theo là của anh, mở bằng \"Một mô hình rất đáng chờ đợi!\""],
+    facts:["<b>Công viên Công nghệ cao và ĐMST, ĐHQGHN</b>: QĐ 189/QĐ-ĐHQGHN ngày 13/1/2025, ra mắt 1/3/2025. Ông Kiểm là giám đốc đầu tiên."],
     jot:true
   }},
-{ id:"r1c", seg:"Vòng 1 · Đại học đã làm gì?", t:[12,16], title:"Hỏi ông Phạm Tuấn Hiệp", who:"son", to:"Hiệp",
+{ id:"r1c", seg:"Vòng 1 · Chính sách đã xuống trường đại học như thế nào?", t:[12,16], title:"Hỏi ông Phạm Tuấn Hiệp", who:"son", to:"Hiệp",
   blocks:[
     {who:"son", html:`<p>Một mô hình rất đáng chờ đợi! Còn tại ĐH Bách khoa Hà Nội, chúng ta vừa nghe tham luận về chương trình thí điểm spinoff. Xin được hỏi ông Phạm Tuấn Hiệp:</p>
-      <span class="ask">HUST đang thử nghiệm Standard Deals và chương trình ươm tạo spinoff. So với cách chuyển giao, thương mại hóa kết quả nghiên cứu trước đây của trường, điểm thay đổi mang tính bản lề của mô hình mới này là gì?</span>`},
-    {who:"guest", html:"Ông Hiệp trả lời · khoảng 3 phút"}
+      <span class="ask">“HUST đang thử nghiệm Standard Deals và chương trình ươm tạo spinoff. So với cách chuyển giao, thương mại hóa kết quả nghiên cứu trước đây của trường, điểm thay đổi mang tính bản lề của mô hình mới này là gì?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
     follow:[
       "Đề án chọn license thay vì định giá tài sản trí tuệ ngay từ đầu. Nếu phải giải thích cho một nhà khoa học trong 30 giây, ông sẽ nói thế nào?",
-      "Standard Deal rút thời gian xử lý nội bộ từ tối đa 57 ngày làm việc xuống còn 15 ngày. Bước nào trước đây gây tắc nhiều nhất?",
+      "Standard Deal rút thời gian xử lý nội bộ từ tối đa 57 ngày làm việc xuống 15 ngày. Bước nào trước đây gây tắc nhiều nhất?",
       "Giảng viên làm nhà sáng lập spin-off có được giữ vị trí giảng dạy không? Đề án có đề xuất chế độ kiêm nhiệm và tạm hoãn nghĩa vụ (career-break)."
     ],
     tips:["Nếu ông Hiệp đi sâu vào thuật ngữ (SAFE, option pool), xin ông một ví dụ cụ thể cho hội trường."],
     facts:[
       "<b>Mẫu Carnegie Mellon</b>: trường nhận 6% cổ phần (license độc quyền, đã có bằng), 5% (không độc quyền), 3% (chưa có bằng, kể cả phần mềm).",
-      "<b>Standard Deal BK</b>: ân hạn tiền bản quyền 36 tháng; mốc bắt buộc 6 tháng có kế hoạch kinh doanh, 12 tháng có đội quản lý, 18 tháng có nguyên mẫu, 24 tháng gọi vốn vòng 1, 36 tháng bán hàng đầu tiên.",
-      "Thí điểm tối đa <b>15 spin-off trong 24 tháng</b>. BK hiện là chủ sở hữu hơn 200 văn bằng SHTT.",
-      "Phân vai: Văn phòng TTO lo IP và license; <b>BK Holdings</b> đứng tên và quản lý phần vốn của trường."
+      "<b>Standard Deal BK</b>: ân hạn tiền bản quyền 36 tháng; mốc 6 tháng kế hoạch kinh doanh, 12 tháng đội quản lý, 18 tháng nguyên mẫu, 24 tháng gọi vốn vòng 1, 36 tháng bán hàng đầu tiên.",
+      "Thí điểm tối đa <b>15 spin-off trong 24 tháng</b>; BK là chủ sở hữu hơn 200 văn bằng SHTT."
     ],
     jot:true
   }},
 { id:"r2a", seg:"Vòng 2 · Show me the evidence", t:[16,22], title:"Ba con số chứng minh", who:"both", to:"Kiểm + Hiệp",
+  banner:["Vòng 2 – 12 phút","“Show me the evidence”"],
   blocks:[
-    {who:"thoa", html:`<p>Cảm ơn ông Hiệp. Chúng ta đã nghe các trường chia sẻ về mô hình và công cụ. Nhưng bây giờ, tôi xin phép chuyển sang câu hỏi khó hơn: Kết quả đâu? Chúng tôi muốn chuyển tọa đàm từ thông điệp "Chúng tôi đã thành lập..." sang: "Chúng tôi đã tạo ra..."</p>`},
-    {who:"son", html:`<p>Chính xác! Một câu hỏi chuẩn hóa dành cho cả hai đại diện cơ sở nghiên cứu, ông Trương Ngọc Kiểm<span class="fix">đã sửa</span> và ông Phạm Tuấn Hiệp:</p>
-      <span class="ask">Nếu chỉ được đưa ra ba con số định lượng để chứng minh mô hình ĐMST của trường mình đang thực sự vận hành và được thị trường đón nhận, ví dụ: số POC với doanh nghiệp, số spinoff thành lập, số hợp đồng R&D hay doanh thu thương mại hóa, các ông sẽ chọn ba con số nào?</span>`},
-    {who:"guest", html:"Mỗi trường khoảng 2 phút · mời ông Kiểm trước, ông Hiệp sau"}
+    {who:"thoa", html:`<p>Cảm ơn ông Hiệp. Chúng ta đã nghe các trường chia sẻ về mô hình và công cụ. Nhưng bây giờ, tôi xin phép chuyển sang câu hỏi khó hơn: Kết quả đâu? Chúng tôi muốn chuyển tọa đàm từ thông điệp “Chúng tôi đã thành lập...” sang: “Chúng tôi đã tạo ra...”</p>`},
+    {who:"son", html:`<p>Chính xác! Một câu hỏi chuẩn hóa dành cho cả hai đại diện cơ sở nghiên cứu – ông Trương Ngọc Kiểm<span class="fix">đã sửa</span> và ông Phạm Tuấn Hiệp:</p>
+      <span class="ask">“Nếu chỉ được đưa ra ba con số định lượng để chứng minh mô hình ĐMST của trường mình đang thực sự vận hành và được thị trường đón nhận — ví dụ: số POC với doanh nghiệp, số spinoff thành lập, số hợp đồng R&amp;D hay doanh thu thương mại hóa — các ông sẽ chọn ba con số nào?”</span>`},
+    {who:"guest", html:"(Mỗi đại diện trường phản hồi nhanh ~2 phút)"}
   ],
   notes:{
-    follow:[
-      "Trong ba con số đó, con số nào khó đạt nhất, và vì sao?",
-      "Đến VNEI Summit 2027, ông muốn con số nào tăng gấp đôi?",
-      "Con số đó có được công bố công khai hằng năm không?"
-    ],
-    tips:[
-      "Nếu khách đưa số <b>đầu vào</b> (số hội thảo, số đội dự thi, số phòng lab), kéo lại nhẹ nhàng: \"Đó là đầu vào. Còn đầu ra mà doanh nghiệp trả tiền thì sao?\"",
-      "Ghi nhanh 6 con số vào ô bên dưới, phần kết luận có thể nhắc lại."
-    ],
-    facts:["Bộ chỉ số theo dõi trong đề án BK gồm 4 nhóm: quy trình vận hành; thương mại hóa (văn bằng được khai thác, doanh thu spin-off, việc làm); thu hút vốn; bền vững (tỷ lệ spin-off còn hoạt động sau 3 và 5 năm)."],
+    follow:["Trong ba con số đó, con số nào khó đạt nhất, và vì sao?","Đến VNEI Summit 2027, ông muốn con số nào tăng gấp đôi?","Con số đó có được công bố công khai hằng năm không?"],
+    tips:["Nếu khách đưa số <b>đầu vào</b> (số hội thảo, số đội dự thi), kéo lại: \"Đó là đầu vào. Còn đầu ra mà doanh nghiệp trả tiền thì sao?\"","Ghi nhanh 6 con số vào ô bên dưới, phần kết luận có thể nhắc lại."],
     jot:true
   }},
 { id:"r2b", seg:"Vòng 2 · Show me the evidence", t:[22,25], title:"Chị Thoa hỏi ông Hiệu", who:"thoa", to:"Hiệu",
   blocks:[
     {who:"thoa", html:`<p>Những con số rất biết nói! Xin quay trở lại với ông Từ Minh Hiệu:</p>
-      <span class="ask">Thưa ông, nếu các trường đại học toàn quốc đều báo cáo bằng những KPI thực chứng định lượng như trên, cơ quan quản lý nhìn thấy cơ hội cộng hưởng như thế nào với Chiến lược Quốc gia về khởi nghiệp sáng tạo theo Nghị quyết 86/NQ-CP<span class="fix">đã sửa</span> của Chính phủ?</span>`},
-    {who:"guest", html:"Ông Hiệu trả lời · khoảng 2,5 phút"}
+      <span class="ask">“Thưa ông, nếu các trường đại học toàn quốc đều báo cáo bằng những KPI thực chứng định lượng như trên, cơ quan quản lý nhìn thấy cơ hội cộng hưởng như thế nào với Chiến lược Quốc gia Khởi nghiệp sáng tạo theo Nghị quyết 86/NQ-CP<span class="fix">đã sửa</span> của Chính phủ?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~2.5 phút)"}
   ],
   notes:{
-    follow:[
-      "Cục có tính đưa các KPI này vào thống kê quốc gia về khởi nghiệp, để các trường báo cáo cùng một chuẩn không?",
-      "Chương trình quốc gia về khởi nghiệp sáng tạo 2026-2035 (QĐ 3789/QĐ-BKHCN) có cửa nào dành riêng cho spin-off đại học không?"
-    ],
-    tips:["Lượt này chị Thoa hỏi. Anh chuẩn bị câu sang ông Dũng (từ Đề án 844 đến NQ 57)."],
-    facts:[
-      "<b>NQ 86/NQ-CP</b> ban hành 5/4/2026: Chiến lược quốc gia về khởi nghiệp sáng tạo, là chiến lược riêng đầu tiên cho lĩnh vực này.",
-      "Mục tiêu đến 2030: 5 triệu doanh nghiệp, ít nhất 10.000 doanh nghiệp khởi nghiệp sáng tạo, ít nhất 5 kỳ lân, thị trường vốn mạo hiểm 1,5 tỷ USD, 100% cơ sở GDĐH và GDNN có nội dung ĐMST và khởi nghiệp trong chương trình đào tạo."
-    ],
+    follow:["Cục có tính đưa các KPI này vào thống kê quốc gia về khởi nghiệp, để các trường báo cáo cùng một chuẩn không?","Chương trình quốc gia về khởi nghiệp sáng tạo 2026-2035 (QĐ 3789/QĐ-BKHCN) có cửa nào dành riêng cho spin-off đại học không?"],
+    tips:["Lượt này chị Thoa hỏi. Câu tiếp theo là của anh, hỏi ông Trần Trí Dũng."],
+    facts:["<b>NQ 86/NQ-CP</b> ban hành 5/4/2026: Chiến lược quốc gia về khởi nghiệp sáng tạo.","Mục tiêu 2030: 5 triệu doanh nghiệp, ≥10.000 DN khởi nghiệp sáng tạo, ≥5 kỳ lân, vốn mạo hiểm 1,5 tỷ USD, 100% cơ sở GDĐH và GDNN có nội dung ĐMST và khởi nghiệp."],
     jot:true
   }},
-{ id:"r2c", seg:"Vòng 2 · Show me the evidence", t:[25,28], title:"Hỏi ông Trần Trí Dũng", who:"son", to:"Dũng",
+{ id:"r2c", seg:"Vòng 2 · Show me the evidence", t:[25,28], title:"Hỏi ông Trần Trí Dũng", who:"son", to:"Trần Trí Dũng",
   blocks:[
     {who:"son", html:`<p>Xin hỏi tiếp ông Trần Trí Dũng:</p>
-      <span class="ask">Là người đồng hành và quan sát hệ sinh thái nhiều năm qua, anh Dũng thấy khu vực đại học đã thực sự chuyển dịch ra sao: từ thời kỳ Đề án 844 tập trung vào phong trào khởi nghiệp, đến nay là Chiến lược ĐMST Quốc gia theo Nghị quyết 57?</span>`},
-    {who:"guest", html:"Ông Dũng trả lời · khoảng 2,5 phút"}
+      <span class="ask">“Là người đồng hành và quan sát hệ sinh thái nhiều năm qua, anh Dũng thấy khu vực đại học đã thực sự chuyển dịch ra sao: từ thời kỳ Đề án 844 tập trung vào phong trào khởi nghiệp, đến nay là Chiến lược ĐMST Quốc gia theo Nghị quyết 57?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~2.5 phút)"}
   ],
   notes:{
-    follow:[
-      "Từ góc nhìn SwissEP, đại học Việt Nam đang thiếu mắt xích nào nhất: văn phòng chuyển giao (TTO), tiền cho giai đoạn hoàn thiện công nghệ (TRL 4-6), hay cố vấn có kinh nghiệm thị trường?",
-      "Có điều gì của giai đoạn Đề án 844 mà anh nghĩ nên giữ lại, không nên bỏ?"
-    ],
-    tips:["Kịch bản xưng \"ông\" ở câu dẫn, \"anh Dũng\" trong câu hỏi. Chọn một cách và giữ nhất quán."],
-    facts:[
-      "<b>Đề án 844</b>: QĐ 844/QĐ-TTg ngày 18/5/2016, hỗ trợ hệ sinh thái khởi nghiệp ĐMST quốc gia đến 2025.",
-      "<b>Đề án 1665</b>: QĐ 1665/QĐ-TTg ngày 30/10/2017, hỗ trợ HSSV khởi nghiệp đến 2025.",
-      "Ông Dũng: Quản lý chương trình SwissEP khu vực Hà Nội, hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong từ 2014."
-    ],
+    follow:["Từ góc nhìn SwissEP, đại học Việt Nam đang thiếu mắt xích nào nhất: văn phòng chuyển giao (TTO), tiền cho giai đoạn TRL 4-6, hay cố vấn có kinh nghiệm thị trường?","Có điều gì của giai đoạn Đề án 844 nên giữ lại?"],
+    tips:["Câu dẫn gọi \"ông\", câu hỏi gọi \"anh Dũng\". Chọn một cách và giữ nhất quán."],
+    facts:["<b>Đề án 844</b>: QĐ 844/QĐ-TTg ngày 18/5/2016, hỗ trợ hệ sinh thái khởi nghiệp ĐMST quốc gia đến 2025.","Ông Trần Trí Dũng: quản lý chương trình SwissEP khu vực Hà Nội, hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong từ 2014."],
     jot:true
   }},
 { id:"r3a", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[28,33], title:"Một cơ chế muốn thay đổi", who:"both", to:"Kiểm + Hiệp",
+  banner:["Vòng 3 – 12 phút","“Điểm nghẽn nằm ở đâu?”"],
   blocks:[
-    {who:"son", html:`<p>Thưa quý vị, nếu mô hình đã định hình, kết quả bước đầu đã có, vì sao vẫn chưa thể tự động nhân rộng? Câu trả lời nằm ở <b>"Điểm nghẽn thực thi"</b>.</p>`},
+    {who:"son", html:`<p>Thưa quý vị, nếu mô hình đã định hình, kết quả bước đầu đã có nhưng vì sao vẫn chưa thể tự động nhân rộng? Câu trả lời nằm ở “Điểm nghẽn thực thi”.</p>`},
     {who:"thoa", html:`<p>Xin được đặt câu hỏi thẳng thắn tới 2 trường (ĐHQGHN và HUST):</p>
-      <span class="ask">Nếu ngay lúc này được phép thay đổi đúng MỘT cơ chế hoặc quy định, dù là về định giá tài sản trí tuệ (IP), quyền sở hữu công nghệ của nhà khoa học, thành lập spinoff hay thủ tục sử dụng tài sản công, đâu là nút thắt lớn nhất đang ghìm chân hoạt động thương mại hóa của trường?</span>`},
-    {who:"guest", html:"Hai trường chia sẻ trực diện · khoảng 2 phút mỗi người"}
+      <span class="ask">“Nếu ngay lúc này được phép thay đổi đúng MỘT cơ chế hoặc quy định – dù là về định giá tài sản trí tuệ (IP), quyền sở hữu công nghệ của nhà khoa học, thành lập spinoff hay thủ tục sử dụng tài sản công – đâu là nút thắt lớn nhất đang ghìm chân hoạt động thương mại hóa của trường?”</span>`},
+    {who:"guest", html:"(Hai trường chia sẻ trực diện ~2 phút/người)"}
   ],
   notes:{
-    follow:[
-      "Cơ chế đó nằm ở văn bản cấp nào: Luật, Nghị định, hay quy chế của chính trường?",
-      "Nếu định giá IP thấp hơn giá trị thực, ai chịu trách nhiệm? Có cần \"vùng an toàn\" (safe harbour) cho người ký không?"
-    ],
+    follow:["Cơ chế đó nằm ở văn bản cấp nào: Luật, Nghị định, hay quy chế của chính trường?","Nếu định giá IP thấp hơn giá trị thực, ai chịu trách nhiệm? Có cần \"vùng an toàn\" (safe harbour) cho người ký không?"],
     tips:["Ghi lại hai nút thắt khách nêu. Câu tiếp theo anh đưa thẳng hai nút thắt này cho ông Hiệu."],
-    facts:[
-      "Cục SHTT nhận định khó khăn định giá IP chủ yếu do thị trường chưa phát triển và năng lực triển khai, không phải do thiếu quy định (trích trong đề án BK).",
-      "Safe Harbour trong đề án BK có 7 điều kiện: đúng quy trình, có hội đồng độc lập, công khai, không tư lợi, theo Standard Deal, kê khai xung đột lợi ích, có ý kiến pháp lý."
-    ],
+    facts:["Safe Harbour trong đề án BK có 7 điều kiện: đúng quy trình, hội đồng độc lập, công khai, không tư lợi, theo Standard Deal, kê khai xung đột lợi ích, có ý kiến pháp lý."],
     jot:true
   }},
 { id:"r3b", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[33,37], title:"Hỏi ông Hiệu: trường tự gỡ được gì?", who:"son", to:"Hiệu",
   blocks:[
-    {who:"son", html:`<p>Một cuộc đối thoại trực tiếp: University ↔ Policy maker<span class="fix">đã sửa</span>. Xin chuyển ngay câu hỏi này tới ông Từ Minh Hiệu:</p>
-      <span class="ask">Anh Hiệu vừa nghe những rào cản rất cụ thể từ cơ sở. Ở góc độ cơ quan tham mưu chính sách, theo anh, đâu là điểm nghẽn mà thực chất các trường hoàn toàn có thể chủ động tự giải quyết bằng quy chế nội bộ, thay vì ngồi chờ sửa luật hay nghị định?</span>`},
-    {who:"guest", html:"Ông Hiệu trả lời · khoảng 3 phút"}
+    {who:"son", html:`<p>Một cuộc đối thoại trực tiếp: University ↔<span class="fix">đã sửa</span> Policy maker. Xin chuyển ngay câu hỏi này tới ông Từ Minh Hiệu:</p>
+      <span class="ask">“Anh Hiệu vừa nghe những rào cản rất cụ thể từ cơ sở. Ở góc độ cơ quan tham mưu chính sách, theo anh, đâu là điểm nghẽn mà thực chất các trường hoàn toàn có thể chủ động tự giải quyết bằng quy chế nội bộ, thay vì ngồi chờ sửa luật hay nghị định?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~3 phút)"}
   ],
   notes:{
-    follow:[
-      "Bộ có thể ban hành một bộ quy chế mẫu về spin-off và IP để các trường áp dụng ngay không, thay vì mỗi trường tự soạn?",
-      "Với những điểm thật sự cần sửa ở cấp trên, Cục đang ưu tiên điểm nào trước?"
-    ],
-    tips:["Nhắc lại ngắn gọn hai nút thắt hai trường vừa nêu (xem ô ghi nhanh của slide trước) trước khi hỏi."],
-    facts:[
-      "Luật KH,CN&ĐMST 2025, khoản 2 Điều 27: tổ chức được tự quyết hình thức, giá và phân chia lợi nhuận khi thương mại hóa kết quả nghiên cứu.",
-      "Đề án BK viện dẫn NĐ 265/2025/NĐ-CP (tài chính, đầu tư trong KH,CN&ĐMST) và NĐ 268/2025/NĐ-CP (ĐMST, khởi nghiệp sáng tạo)."
-    ],
+    follow:["Bộ có thể ban hành một bộ quy chế mẫu về spin-off và IP để các trường áp dụng ngay không?","Với những điểm thật sự cần sửa ở cấp trên, Cục đang ưu tiên điểm nào trước?"],
+    tips:["Nhắc lại ngắn hai nút thắt hai trường vừa nêu (xem ghi nhanh của slide trước) trước khi hỏi."],
+    facts:["Luật KH,CN&ĐMST 2025, khoản 2 Điều 27: tổ chức tự quyết hình thức, giá và phân chia lợi nhuận khi thương mại hóa kết quả nghiên cứu."],
     jot:true
   }},
-{ id:"r3c", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[37,40], title:"Chị Thoa hỏi ông Dũng", who:"thoa", to:"Dũng",
+{ id:"r3c", seg:"Vòng 3 · Điểm nghẽn nằm ở đâu?", t:[37,40], title:"Chị Thoa hỏi ông Trần Trí Dũng", who:"thoa", to:"Trần Trí Dũng",
   blocks:[
-    {who:"thoa", html:`<span class="ask">Còn quan điểm của anh Trần Trí Dũng thế nào? Từ kinh nghiệm quốc tế, đâu là những nút thắt các trường có thể tự mở khóa bằng năng lực quản trị nội bộ mà không cần phụ thuộc vào cơ chế vĩ mô?</span>`},
-    {who:"guest", html:"Ông Dũng trả lời · khoảng 2 phút"}
+    {who:"thoa", html:`<span class="ask">“Còn quan điểm của anh Trần Trí Dũng thế nào? Từ kinh nghiệm quốc tế, đâu là những nút thắt các trường có thể tự mở khóa bằng năng lực quản trị nội bộ mà không cần phụ thuộc vào cơ chế vĩ mô?”</span>`},
+    {who:"guest", html:"(Khách mời trả lời ~2 phút)"}
   ],
   notes:{
     follow:["Nếu một trường chỉ làm được một việc trong 90 ngày tới, anh khuyên làm việc gì?"],
-    tips:[
-      "Nếu đang chậm hơn 2 phút, đây là câu nên rút ngắn nhất (xem Tra nhanh · Dự phòng).",
-      "Câu chuyển sang Vòng 4 là của anh: \"Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ Problem sang Action.\""
-    ],
-    facts:["Ví dụ quốc tế trong đề án BK: Mỹ (Bayh-Dole, 7.000-8.000 hợp đồng license mỗi năm, hơn 1.000 spin-off đại học mỗi năm), Nhật (TLO đưa doanh nghiệp vào từ giai đoạn R&D)."],
+    tips:["Nếu đang chậm hơn 2 phút, đây là câu nên rút ngắn nhất.","Câu mở Vòng 4 là của anh."],
     jot:true
   }},
-{ id:"r4", seg:"Vòng 4 · Từ pilot đến scale", t:[40,46], title:"Cam kết hành động 60 giây", who:"both", to:"Cả 4 khách",
+{ id:"r4", seg:"Vòng 4 · Từ pilot đến scale", t:[40,45], title:"Cam kết hành động 60 giây", who:"both", to:"Cả 4 khách",
+  banner:["Vòng 4 – “Từ pilot đến scale”","Kịch bản gốc 7 phút · rút còn 5 phút để thêm lượt Chủ tịch VNEI"],
   blocks:[
-    {who:"son", html:`<p>Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ "Problem" sang "Action". Ở vòng này, chúng tôi áp dụng luật: <b>mỗi diễn giả có đúng 60 giây cam kết hành động!</b></p>`},
+    {who:"son", html:`<p>Chúng ta đã mổ xẻ vấn đề, bây giờ là lúc chuyển từ “Problem” sang “Action”. Ở vòng này, chúng tôi áp dụng luật: Mỗi diễn giả có đúng 60 giây cam kết hành động!</p>`},
     {who:"thoa", html:`<p>Câu hỏi chung cho cả 4 vị khách mời:</p>
-      <span class="ask">Trong vòng 6 đến 12 tháng tới, MỘT việc quan trọng nhất mà tổ chức của quý vị ưu tiên triển khai để đưa ĐMST đại học từ giai đoạn thử nghiệm (pilot) sang nhân rộng (scale) là gì?</span>`},
-    {who:"son", html:`<p><b>Thứ tự mời:</b></p><ul>
-      <li><b>Anh mời</b> ông Trương Ngọc Kiểm (ĐHQGHN) · 60 giây</li>
-      <li>Chị Thoa mời ông Phạm Tuấn Hiệp (BK Holdings/HUST) · 60 giây</li>
-      <li><b>Anh mời</b> ông Từ Minh Hiệu (Cục Khởi nghiệp và Doanh nghiệp công nghệ<span class="fix">đã sửa</span>) · 60 giây</li>
-      <li>Chị Thoa mời ông Trần Trí Dũng (SwissEP) · 60 giây</li></ul>`}
+      <span class="ask">“Trong vòng 6 đến 12 tháng tới, MỘT việc quan trọng nhất mà tổ chức của quý vị ưu tiên triển khai để đưa ĐMST đại học từ giai đoạn thử nghiệm (pilot) sang nhân rộng (scale) là gì?”</span>
+      <ul><li><b>MC 1 mời:</b> Ông Trương Ngọc Kiểm (ĐHQGHN) (60s)</li><li><b>MC 2 mời:</b> Ông Phạm Tuấn Hiệp (BK Holdings/HUST) (60s)</li><li><b>MC 1 mời:</b> Ông Từ Minh Hiệu (Cục Khởi nghiệp và Doanh nghiệp công nghệ<span class="fix">đã sửa</span>) (60s)</li><li><b>MC 2 mời:</b> Ông Trần Trí Dũng (SwissEP) (60s)</li></ul>`}
   ],
   notes:{
-    tips:[
-      "Câu chặn lịch sự khi quá giờ: \"Xin cảm ơn ông, chúng ta giữ đúng 60 giây để kịp nghe cam kết của các khách mời còn lại.\"",
-      "Ghi mỗi cam kết thành một dòng. Phần kết luận nhắc lại được thì hội trường nhớ lâu hơn."
+    tips:["Anh mời lượt 1 và lượt 3: \"Xin mời ông Trương Ngọc Kiểm.\" / \"Xin mời ông Từ Minh Hiệu.\"","Câu chặn lịch sự khi quá giờ: \"Xin cảm ơn ông, chúng ta giữ đúng 60 giây để kịp nghe cam kết của các khách mời còn lại.\""],
+    jot:true
+  }},
+{ id:"quick", seg:"Chốt nhanh", t:[45,46], title:"MC 1 chốt nhanh · 30 giây", who:"son",
+  blocks:[
+    {who:"son", html:`<span class="ask">“Một câu hỏi siêu ngắn 30 giây cho cả panel: Đến VNEI Summit 2027, cộng đồng cần nhìn thấy tín hiệu/chỉ số cụ thể nào để khẳng định năm 2026 này thực sự là năm chuyển đổi mô hình ĐMST đại học?”</span>`},
+    {who:"guest", html:"(Panel điểm danh nhanh 1-2 từ khóa)"}
+  ],
+  notes:{ tips:["Đi theo hàng ghế, mỗi người 1-2 từ khóa."], jot:true }},
+{ id:"vnei", seg:"Góc nhìn VNEI", t:[46,48], title:"Mời TS. Nguyễn Trung Dũng, Chủ tịch VNEI", who:"son", to:"Nguyễn Trung Dũng", added:true,
+  banner:["Phần thêm – 2 phút","Không có trong kịch bản BTC gửi 2/10"],
+  blocks:[
+    {who:"son", html:`<p>Xin cảm ơn các diễn giả. Trước khi bước vào phần đúc kết, cho phép chúng tôi mời một góc nhìn từ chính mạng lưới tổ chức Hội nghị hôm nay. Xin kính mời TS. Nguyễn Trung Dũng, Chủ tịch Mạng lưới Đổi mới sáng tạo và Khởi nghiệp Đại học, Cao đẳng Việt Nam (VNEI).</p>
+      <span class="ask">“Thưa ông, sau những gì vừa được chia sẻ từ cơ quan quản lý, từ các trường và từ góc nhìn quốc tế, theo ông, để những mô hình như ở ĐHQGHN hay HUST không chỉ là câu chuyện của vài trường đầu tàu mà trở thành năng lực chung của cả hệ thống đại học, cao đẳng, mạng lưới VNEI sẽ đóng vai trò gì trong một năm tới?”</span>`},
+    {who:"guest", html:"(TS. Nguyễn Trung Dũng chia sẻ ~2 phút)"}
+  ],
+  notes:{
+    follow:[
+      "VNEI có thể xây một bộ chỉ số chung để các trường thành viên cùng báo cáo, và công bố tại Summit 2027 không?",
+      "Các trường thành viên chưa có quỹ hay công ty như BK Holdings thì VNEI giúp họ bắt đầu từ đâu?"
     ],
+    tips:[
+      "Ông Nguyễn Trung Dũng đồng thời là <b>Tổng Giám đốc BK Holdings</b>, tức cấp trên của ông Hiệp. Hỏi từ góc độ mạng lưới VNEI, tránh lặp câu chuyện spin-off của HUST.",
+      "Luôn gọi đủ họ tên \"Nguyễn Trung Dũng\" để không lẫn với ông Trần Trí Dũng (SwissEP).",
+      "Nếu ông không có mặt hoặc đang chậm giờ, bỏ slide này, sang thẳng kết luận.",
+      "Câu trả lời của ông là cầu nối tự nhiên sang thông điệp 3 (\"mạng lưới VNEI cần nhanh chóng được chuẩn hóa, hoàn thiện và nhân rộng\")."
+    ],
+    facts:["TS. Nguyễn Trung Dũng: Chủ tịch VNEI nhiệm kỳ mới; Tổng Giám đốc BK Holdings, ĐH Bách khoa Hà Nội (theo hồ sơ trong Atlas-Talk)."],
     jot:true
   }},
-{ id:"quick", seg:"Chốt nhanh", t:[46,47], title:"Câu hỏi 30 giây cho cả panel", who:"son",
+{ id:"close", seg:"Thông điệp kết luận", t:[48,50], title:"Thông điệp kết luận", who:"both",
+  banner:["Thông điệp kết luận","Kịch bản gốc 3 phút · còn 2 phút"],
   blocks:[
-    {who:"son", html:`<span class="ask">Một câu hỏi siêu ngắn 30 giây cho cả panel: Đến VNEI Summit 2027, cộng đồng cần nhìn thấy tín hiệu, chỉ số cụ thể nào để khẳng định năm 2026 này thực sự là năm chuyển đổi mô hình ĐMST đại học?</span>`},
-    {who:"guest", html:"Panel điểm danh nhanh 1-2 từ khóa"}
-  ],
-  notes:{
-    tips:["Đi theo hàng ghế, mỗi người 1-2 từ khóa. Không để ai nói thành câu dài."],
-    jot:true
-  }},
-{ id:"close", seg:"Kết luận", t:[47,50], title:"Thông điệp đúc kết", who:"both",
-  blocks:[
-    {who:"thoa", html:`<p>Kính thưa quý vị đại biểu, 50 phút thảo luận thẳng thắn, trách nhiệm vừa rồi đã phác họa rất rõ nét sự chuyển dịch tại các trường đại học Việt Nam qua 3 thông điệp đúc kết:</p>
-      <ul><li><b>Từ "hoạt động ĐMST phong trào" sang "năng lực ĐMST nội tại"</b>: ĐMST trong đại học không còn đo bằng số lượng hội thảo hay giải thưởng startup, mà phải được lượng hóa bằng POC, IP licensing, doanh nghiệp spinoff, vốn đầu tư thu hút và doanh thu thương mại hóa.</li>
-      <li><b>Từ "Technology Push" sang "Market Pull kết hợp Technology Push"</b>: nhu cầu doanh nghiệp và thị trường phải đồng hành ngay từ ngày đầu tại phòng lab, giải quyết bài toán thị trường thay vì làm xong nghiên cứu mới loay hoay tìm đầu ra.</li></ul>`},
-    {who:"son", html:`<p><b>3. Từ "Pilot" sang "Thể chế hóa nội bộ" và "Scale"</b>: những mô hình tiên phong như tại ĐHQGHN, HUST và mạng lưới VNEI cần nhanh chóng được chuẩn hóa, hoàn thiện và nhân rộng trên toàn quốc.</p>
+    {who:"thoa", html:`<p>Kính thưa quý vị đại biểu,</p><p>50 phút thảo luận thẳng thắn, trách nhiệm vừa rồi đã phác họa rất rõ nét sự chuyển dịch tại các trường đại học Việt Nam qua 3 thông điệp đúc kết:</p>
+      <ul><li>Từ “hoạt động ĐMST phong trào” sang “năng lực ĐMST nội tại”: ĐMST trong đại học không còn đo bằng số lượng hội thảo hay giải thưởng startup, mà phải được lượng hóa bằng POC, IP licensing, doanh nghiệp spinoff, vốn đầu tư thu hút và doanh thu thương mại hóa.</li>
+      <li>Từ “Technology Push” sang “Market Pull kết hợp Technology Push”: Nhu cầu doanh nghiệp và thị trường phải đồng hành ngay từ ngày đầu tại phòng lab, giải quyết bài toán thị trường thay vì làm xong nghiên cứu mới loay hoay tìm đầu ra.</li></ul>`},
+    {who:"son", html:`<p>3. Từ “Pilot” sang “Thể chế hóa nội bộ” và “Scale”: Những mô hình tiên phong như tại ĐHQGHN, HUST và mạng lưới VNEI cần nhanh chóng được chuẩn hóa, hoàn thiện và nhân rộng trên toàn quốc.</p>
       <p>Thay mặt ban tổ chức và các điều phối viên, xin trân trọng cảm ơn 4 vị diễn giả và toàn thể quý vị đại biểu. Hẹn gặp lại tất cả chúng ta tại VNEI Summit 2027 để cùng nhau kiểm chứng và lượng hóa kết quả dịch chuyển này!</p>
       <p>Xin trân trọng cảm ơn!</p>`}
   ],
   notes:{
-    tips:[
-      "Nếu còn thời gian, chèn một câu nhắc lại cam kết hay con số đắt nhất của khách trước thông điệp 3 (xem ghi nhanh bên dưới).",
-      "Sau khi cảm ơn: mời khách mời ở lại chụp ảnh chung nếu BTC có sắp xếp."
-    ],
+    tips:["Có thể thêm cảm ơn TS. Nguyễn Trung Dũng ngay sau \"4 vị diễn giả\".","Nếu còn thời gian, nhắc một con số hoặc cam kết đắt nhất của khách trước thông điệp 3 (xem ghi nhanh bên dưới)."],
     recap:true
   }}
 ];
@@ -510,6 +494,8 @@ guests:`
     <ul><li>Đồng thời là Giám đốc Ươm tạo của BK Holdings và Giám đốc quản lý quỹ BK Fund.</li><li>BK Holdings là hệ thống quản lý đầu tư và chuyển giao công nghệ của HUST; trong đề án sandbox, đây là bên đứng tên phần vốn của trường tại spin-off.</li><li>Lượt hỏi: V1 (anh), V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
   <div class="gcard"><h4>Ông Trần Trí Dũng</h4><div class="role">Quản lý chương trình khu vực Hà Nội, SwissEP</div>
     <ul><li>Từ 2014 hỗ trợ hệ sinh thái khởi nghiệp các nước Mekong (Myanmar, Campuchia, Lào, Thái Lan, Việt Nam).</li><li>Từ 2004 làm tư vấn quản trị chiến lược cho doanh nghiệp tư nhân.</li><li>Hồ sơ công khai ghi là Phó Chủ tịch thường trực VSMA (mạng lưới cố vấn khởi nghiệp, VCCI).</li><li>Lượt hỏi: V2 (anh), V3 (Thoa), V4 (Thoa mời).</li></ul></div>
+  <div class="gcard"><h4>TS. Nguyễn Trung Dũng</h4><div class="role">Chủ tịch VNEI · Tổng Giám đốc BK Holdings</div>
+    <ul><li>Không có trong danh sách khách của kịch bản BTC. Anh mời phát biểu ~2 phút trước kết luận.</li><li>Là cấp trên của ông Phạm Tuấn Hiệp ở BK Holdings: hỏi từ góc độ mạng lưới VNEI.</li><li>Luôn gọi đủ họ tên, tránh lẫn với ông Trần Trí Dũng.</li></ul></div>
   <div class="gcard"><h4>ThS. Hoàng Thị Thoa</h4><div class="role">Trường ĐH Công thương TP.HCM · đồng điều phối (MC 2)</div>
     <ul><li>Đọc phần giới thiệu khách, câu dẫn Vòng 2, câu hỏi chính Vòng 3, câu hỏi chung Vòng 4, thông điệp 1-2.</li></ul></div>
 </div>`,
@@ -549,7 +535,7 @@ qa:`
 <div class="qa">
   <div><div class="to">→ Ông Hiệp</div><div class="q">Giảng viên làm nhà sáng lập spin-off có vướng Luật Viên chức không?</div><div class="a">Đề án BK đề xuất thí điểm chế độ kiêm nhiệm và tạm hoãn một phần nghĩa vụ công tác.</div></div>
   <div><div class="to">→ Ông Hiệp</div><div class="q">Sinh viên chưa có IP thì có cửa nào vào spin-off không?</div><div class="a">Hỏi về chương trình ươm tạo và BK Fund.</div></div>
-  <div><div class="to">→ Ông Dũng</div><div class="q">Trường nhỏ, trường địa phương không có quỹ như BK Fund thì bắt đầu từ đâu?</div><div class="a">Gợi ý: quy chế IP nội bộ, mạng lưới cố vấn, kết nối với chương trình quốc tế.</div></div>
+  <div><div class="to">→ Ông Trần Trí Dũng</div><div class="q">Trường nhỏ, trường địa phương không có quỹ như BK Fund thì bắt đầu từ đâu?</div><div class="a">Gợi ý: quy chế IP nội bộ, mạng lưới cố vấn, kết nối với chương trình quốc tế.</div></div>
   <div><div class="to">→ Ông Kiểm</div><div class="q">Doanh nghiệp muốn đặt hàng nghiên cứu thì vào cửa nào của ĐHQGHN?</div><div class="a">Hỏi về đầu mối tiếp nhận ở Công viên.</div></div>
   <div><div class="to">→ Ông Hiệu</div><div class="q">Có nguồn vốn nhà nước nào cho giai đoạn POC, TRL 4-6 không?</div><div class="a">Liên hệ Chương trình quốc gia khởi nghiệp 2026-2035 và các nghị định tài chính KH,CN&ĐMST.</div></div>
   <div><div class="to">→ Điều phối trả lời</div><div class="q">VNEI sẽ làm gì tiếp sau Summit?</div><div class="a">Anh trả lời ngắn từ góc độ Ban Nghiên cứu VNEI; hẹn kiểm chứng số liệu ở Summit 2027 như lời kết.</div></div>
@@ -566,7 +552,7 @@ backup:`
 <ul>
 <li><b>Chậm 1-2 phút</b>: bỏ câu hỏi phụ, chuyển câu nhanh hơn.</li>
 <li><b>Chậm 3 phút</b>: rút câu hỏi của chị Thoa cho ông Dũng ở Vòng 3 xuống 1 phút, hoặc gộp vào lượt cam kết ở Vòng 4.</li>
-<li><b>Chậm 4 phút trở lên</b>: bỏ phần "Chốt nhanh 30 giây", vào thẳng kết luận.</li>
+<li><b>Chậm 4 phút trở lên</b>: bỏ phần "Chốt nhanh 30 giây"; rút lượt Chủ tịch VNEI còn 1 phút.</li>
 <li>Không cắt Vòng 4 và kết luận. Đó là phần hội trường nhớ.</li>
 </ul>
 <h3>Khách nói quá giờ</h3>
@@ -581,8 +567,9 @@ backup:`
 </ul>
 <h3>Một khách vắng mặt</h3>
 <ul>
-<li><b>Vắng ông Hiệu</b>: câu V1 chuyển cho ông Dũng ("nhìn từ hệ sinh thái"); câu V2 về NQ 86 và câu V3 về quy chế nội bộ gộp làm một, hỏi ông Dũng.</li>
-<li><b>Vắng ông Dũng</b>: câu V2 chuyển cho ông Hiệu; bỏ câu V3 của chị Thoa.</li>
+<li><b>Vắng ông Hiệu</b>: câu V1 chuyển cho ông Trần Trí Dũng ("nhìn từ hệ sinh thái"); câu V2 về NQ 86 và câu V3 về quy chế nội bộ gộp làm một, hỏi ông Trần Trí Dũng.</li>
+<li><b>Vắng ông Trần Trí Dũng</b>: câu V2 chuyển cho ông Hiệu; bỏ câu V3 của chị Thoa.</li>
+<li><b>Vắng TS. Nguyễn Trung Dũng</b>: bỏ slide Góc nhìn VNEI, trả 2 phút cho Vòng 4 và kết luận như kịch bản gốc.</li>
 <li><b>Vắng một trong hai trường</b>: câu "ba con số" và "một cơ chế" hỏi riêng trường còn lại, cho 3 phút.</li>
 </ul>
 <h3>Sự cố kỹ thuật</h3>
@@ -601,7 +588,7 @@ if (offsetMs !== null && store.get("offsetDay","") !== new Date().toDateString()
 
 const $ = id => document.getElementById(id);
 const scriptEl = $("script"), notesEl = $("notes");
-const WHO = {son:"Anh Sơn đọc", thoa:"ThS. Thoa đọc", guest:"Khách mời"};
+const WHO = {son:"MC 1 · TS. Bùi Tiến Sơn (anh)", thoa:"MC 2 · ThS. Hoàng Thị Thoa", guest:"Khách mời"};
 const WHO_SHORT = {son:"Sơn", thoa:"Thoa", both:"Cả hai"};
 
 function hm(min){ const d = new Date(); d.setHours(START_H, START_M + min, 0, 0); return pad(d.getHours())+":"+pad(d.getMinutes()); }
@@ -609,7 +596,7 @@ function pad(n){ return String(n).padStart(2,"0"); }
 function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 function coverHTML(){
-  const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","7'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới?"],["16:17","3'","Kết luận","Thông điệp đúc kết"]];
+  const rows = [["15:30","4'","Mở đề","Chính sách đã thay đổi điều gì đối với ĐMST đại học?"],["15:34","12'","Vòng 1","Mô hình, hoạt động mới nào đã thực sự triển khai?"],["15:46","12'","Vòng 2","Đâu là kết quả đo được?"],["15:58","12'","Vòng 3","Chính sách nào chưa \"chạy\" được ở cấp trường?"],["16:10","5'","Vòng 4","Mỗi bên sẽ làm gì trong 12 tháng tới? (+ chốt nhanh 30s)"],["16:16","2'","Góc nhìn VNEI","TS. Nguyễn Trung Dũng, Chủ tịch VNEI (phần thêm)"],["16:18","2'","Kết luận","Thông điệp đúc kết"]];
   return `<div class="cover"><p class="kicker">VNEI Summit 2026 · 3/10/2026 · Tầng 6, tòa nhà NIC</p>
   <h1>Từ chính sách <em>đến thực thi</em></h1>
   <p class="sub">Tọa đàm 15:30 - 16:20 · 50 phút · số 1 Nguyễn Hữu An, Cầu Giấy, Hà Nội</p>
@@ -620,6 +607,7 @@ function coverHTML(){
     <div class="pcard"><b>Ông Trương Ngọc Kiểm</b><span>GĐ Công viên ĐMST, ĐHQGHN</span></div>
     <div class="pcard"><b>Ông Phạm Tuấn Hiệp</b><span>GĐ Đầu tư, BK Holdings</span></div>
     <div class="pcard"><b>Ông Trần Trí Dũng</b><span>SwissEP</span></div>
+    <div class="pcard"><b>TS. Nguyễn Trung Dũng</b><span>Chủ tịch VNEI · mời phát biểu 16:16</span></div>
   </div>
   <table class="ros">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[2]} <span style="color:var(--faint);font-weight:500">${r[1]}</span></td><td>${r[3]}</td></tr>`).join("")}</table></div>`;
 }
@@ -627,7 +615,8 @@ function coverHTML(){
 function renderScript(s){
   if (s.cover) return coverHTML();
   const blocks = s.blocks.map(b => `<div class="blk ${b.who}"><div class="who">${WHO[b.who]}</div><div class="say">${b.html}</div></div>`).join("");
-  return `<p class="kicker">${esc(s.seg)} · ${hm(s.t[0])} - ${hm(s.t[1])}</p><h2 class="stitle">${esc(s.title)}</h2><div class="blocks">${blocks}</div>`;
+  const ban = s.banner ? `<div class="banner"><div class="bt">${esc(s.banner[0])}</div><div class="bq">${esc(s.banner[1])}</div></div>` : "";
+  return `${ban}<p class="kicker">${hm(s.t[0])} - ${hm(s.t[1])} · ${esc(s.title)}</p><div class="blocks">${blocks}</div>`;
 }
 
 function list(cls, title, arr){ return arr && arr.length ? `<div class="nsec ${cls}"><h3>${title}</h3><ul>${arr.map(x=>`<li>${x}</li>`).join("")}</ul></div>` : ""; }
@@ -642,7 +631,8 @@ function renderNotes(s){
     const items = S.filter(x=>x.notes&&x.notes.jot).map(x=>({s:x, v:store.get("jot."+x.id,"").trim()})).filter(x=>x.v);
     h += `<div class="nsec"><h3>Đã ghi trong tọa đàm</h3>${items.length? `<div class="recap">${items.map(x=>`<div><b>${esc(x.s.to||x.s.title)}</b> · ${esc(x.v).replace(/\n/g,"<br>")}</div>`).join("")}</div>` : `<p style="color:var(--faint);font-size:14px;margin:0">Chưa có ghi chú nào. Các ô "Ghi nhanh" ở từng slide sẽ tập hợp về đây.</p>`}</div>`;
   }
-  return h || `<p style="color:var(--faint)">Không có ghi chú.</p>`;
+  const head = `<div class="notes-head"><b>Ghi chú · ${esc(s.title)}</b><button class="tbtn" data-notes-close>Đóng</button></div>`;
+  return head + (h || `<p style="color:var(--faint)">Không có ghi chú.</p>`);
 }
 
 function go(n){
@@ -652,6 +642,7 @@ function go(n){
   scriptEl.innerHTML = renderScript(s);
   notesEl.innerHTML = renderNotes(s);
   scriptEl.scrollTop = 0; notesEl.scrollTop = 0;
+  if (!wideMQ.matches) applyNotes(false);
   scriptEl.classList.remove("enter"); void scriptEl.offsetWidth; scriptEl.classList.add("enter");
   const ta = s.notes && s.notes.jot ? $("jot-"+s.id) : null;
   if (ta) ta.addEventListener("input", () => store.set("jot."+s.id, ta.value));
@@ -735,8 +726,11 @@ $("btnRef").onclick = () => { showTab(store.get("tab","guests")); $("refSheet").
 function applyFs(){ document.documentElement.style.setProperty("--fs", fs); store.set("fs", fs); }
 $("btnSmaller").onclick = () => { fs = Math.max(.8, +(fs-.1).toFixed(2)); applyFs(); };
 $("btnBigger").onclick = () => { fs = Math.min(1.5, +(fs+.1).toFixed(2)); applyFs(); };
-function applyNotes(off){ document.body.classList.toggle("notes-off", off); $("btnNotes").textContent = off ? "Hiện ghi chú" : "Ẩn ghi chú"; store.set("notesOff", off); }
-$("btnNotes").onclick = () => applyNotes(!document.body.classList.contains("notes-off"));
+const wideMQ = window.matchMedia("(min-width:1000px) and (orientation:landscape)");
+function applyNotes(open){ document.body.classList.toggle("notes-open", open); $("btnNotes").textContent = open ? "Ẩn ghi chú" : "Ghi chú"; $("btnNotes").classList.toggle("gold", !open && !wideMQ.matches); }
+$("btnNotes").onclick = () => applyNotes(!document.body.classList.contains("notes-open"));
+notesEl.addEventListener("click", e => { if (e.target.closest("[data-notes-close]")) applyNotes(false); });
+try { wideMQ.addEventListener("change", () => applyNotes(wideMQ.matches)); } catch(e){}
 
 /* keep the screen awake on stage, where allowed */
 let lock = null;
@@ -744,7 +738,7 @@ async function wake(){ try{ if ("wakeLock" in navigator && !lock){ lock = await 
 document.addEventListener("pointerdown", wake);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
 
-applyFs(); applyNotes(store.get("notesOff", false)); go(i);
+applyFs(); applyNotes(wideMQ.matches); go(i);
 })();
 </script>
 
